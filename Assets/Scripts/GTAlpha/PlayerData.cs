@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GTAlpha.Player
+namespace GTAlpha
 {
     [Serializable]
     public class PlayerData
