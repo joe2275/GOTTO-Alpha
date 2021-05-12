@@ -99,6 +99,12 @@ namespace GTAlpha
             }
         }
 
+        public static int Property
+        {
+            get => _current.mProperty;
+            set => _current.mProperty = Mathf.Max(value, 0);
+        }
+
         public static int Promotion => _current.mLevel - (_current.mVitality + _current.mEndurance + _current.mStrength + _current.mResistance + 1);
 
         public static int Vitality
@@ -175,6 +181,8 @@ namespace GTAlpha
 
         private int mLevel = 1;
         private int mExp;
+
+        private int mProperty;
 
         private int mVitality;
         private int mEndurance;
