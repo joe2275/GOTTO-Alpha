@@ -99,10 +99,10 @@ namespace GTAlpha
             }
         }
 
-        public static int Property
+        public static int Possessions
         {
-            get => _current.mProperty;
-            set => _current.mProperty = Mathf.Max(value, 0);
+            get => _current.mPossessions;
+            set => _current.mPossessions = Mathf.Max(value, 0);
         }
 
         public static int Promotion => _current.mLevel - (_current.mVitality + _current.mEndurance + _current.mStrength + _current.mResistance + 1);
@@ -182,7 +182,7 @@ namespace GTAlpha
         private int mLevel = 1;
         private int mExp;
 
-        private int mProperty;
+        private int mPossessions;
 
         private int mVitality;
         private int mEndurance;

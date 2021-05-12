@@ -9,12 +9,26 @@
             return -(int) (increase * limitation * limitation / (second + increase * limitation) + limitation);
         }
 
+        private static int GetMaxHealthPointAddition(int maxHealthPoint)
+        {
+            float limitation = Constant.MaximumHealthPointTimes * maxHealthPoint;
+            return -(int) (Constant.MaxHealthPointIncrease * limitation * limitation /
+                (PlayerData.Possessions + Constant.MaxHealthPointIncrease * limitation) + limitation);
+        }
+
         #endregion
 
         #region Public Properties
 
-        public override int MaxHealthPoint => ConvertSecondToFirst(PlayerData.Vitality, Constant.VitalityIncrease,
-            Constant.VitalityLimitation);
+        public override int MaxHealthPoint
+        {
+            get
+            {
+                int maxHealthPoint = ConvertSecondToFirst(PlayerData.Vitality, Constant.VitalityIncrease,
+                    Constant.VitalityLimitation);
+                return maxHealthPoint + GetMaxHealthPointAddition(maxHealthPoint);
+            }
+        }
 
         public override int MaxStaminaPoint => ConvertSecondToFirst(PlayerData.Endurance, Constant.EnduranceIncrease,
             Constant.EnduranceLimitation);
