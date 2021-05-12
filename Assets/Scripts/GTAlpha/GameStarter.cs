@@ -1,4 +1,5 @@
 ﻿using System;
+using Manager;
 using UnityEngine;
 
 namespace GTAlpha
@@ -19,6 +20,9 @@ namespace GTAlpha
 
             _isStarted = true;
             DontDestroyOnLoad(gameObject);
+            
+            ScriptManager.Load();
+            StateManager.Load();
             for (int i = 0; i < scriptableObjects.Length; i++)
             {
                 scriptableObjects[i].Load();

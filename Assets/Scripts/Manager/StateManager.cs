@@ -8,7 +8,7 @@ namespace Manager
     {
         public static StateHandler<bool> Pause { get; private set; }
 
-        static StateManager()
+        public static void Load()
         {
             Pause = new StateHandler<bool>();
 
