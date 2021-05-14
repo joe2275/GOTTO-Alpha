@@ -11,6 +11,12 @@ namespace GTAlpha
         
         #endregion
 
+        #region Const Fields
+
+        public const string AnimationState = "State";
+
+        #endregion
+
         #region Public Static Properties
         
         public static float MaxExpCoefficient => _main.maxExpCoefficient;
@@ -52,7 +58,7 @@ namespace GTAlpha
         [SerializeField] private int basePlayerEndurance = 10;
         [SerializeField] private int basePlayerStrength = 10;
         [SerializeField] private int basePlayerResistance = 10;
-
+        
         #endregion
 
         #region Public Methods
