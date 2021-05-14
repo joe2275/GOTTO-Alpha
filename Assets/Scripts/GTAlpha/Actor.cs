@@ -25,12 +25,13 @@ namespace GTAlpha
         public Animator BodyAnimator => bodyAnimator;
         public Vector3 Forward => forwardTransform.position - centerTransform.position;
         public Status Status { get; protected set; }
+        public ActorInput Input { get; protected set; }
 
         #endregion
 
         #region Public Methods
 
-        public void Move(Vector3 movement, Space space)
+        public void Move(Vector3 movement, Space space = Space.Self)
         {
             transform.Translate(movement, space);
         }
@@ -49,22 +50,26 @@ namespace GTAlpha
 
         #region Idle State Events
 
-        public virtual void StartOnIdle()
+        protected virtual void StartOnIdle()
         {
-            bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Idle);
+            // bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Idle);
         }
 
-        public virtual void EndOnIdle()
-        {
-            
-        }
-
-        public virtual void UpdateOnIdle()
+        protected virtual void EndOnIdle()
         {
             
         }
 
-        public virtual void FixedUpdateOnIdle()
+        protected virtual void UpdateOnIdle()
+        {
+            Vector2 movement = Input.Movement;
+            if (Mathf.Abs(movement.x) > Mathf.Epsilon || Mathf.Abs(movement.y) > Mathf.Epsilon)
+            {
+                State = ActorState.Move;
+            }
+        }
+
+        protected virtual void FixedUpdateOnIdle()
         {
             
         }
@@ -73,46 +78,69 @@ namespace GTAlpha
 
         #region Move State Events
 
-        public virtual void StartOnMove()
+        protected virtual void StartOnMove()
         {
-            bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Move);
+            // bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Move);
         }
 
-        public virtual void EndOnMove()
+        protected virtual void EndOnMove()
         {
             
         }
 
-        public virtual void UpdateOnMove()
+        protected virtual void UpdateOnMove()
         {
-            
+            Vector2 movement = Input.Movement;
+
+            if (Mathf.Abs(movement.x) < Mathf.Epsilon && Mathf.Abs(movement.y) < Mathf.Epsilon)
+            {
+                State = ActorState.Idle;
+            }
         }
 
-        public virtual void FixedUpdateOnMove()
+        protected virtual void FixedUpdateOnMove()
         {
+            Vector2 movement = Input.Movement;
+            // 이동 입력 정규화
+            float magnitude = movement.magnitude;
+            if (magnitude > 1.0f + Mathf.Epsilon)
+            {
+                movement /= magnitude;
+            }
+            // 이동 입력 회전 각도
+            // float movementAngle = Vector2.Angle(Vector2.up, movement);
             
+            // 액터 전방 회전 각도
+            // Vector3 realForward = Forward;
+            // Vector2 forward = new Vector2(realForward.x, realForward.z);
+            // float forwardAngle = Vector2.Angle(Vector2.up, forward);
+            
+            // 액터 전방 기준 이동
+            Vector3 realMovement = new Vector3(movement.x, 0.0f, movement.y);
+            
+            Move(realMovement * (Status.MoveSpeed * Time.fixedDeltaTime));
         }
 
         #endregion
 
         #region Hit State Events
 
-        public virtual void StartOnHit()
+        protected virtual void StartOnHit()
         {
             bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Hit);
         }
 
-        public virtual void EndOnHit()
+        protected virtual void EndOnHit()
         {
             
         }
 
-        public virtual void UpdateOnHit()
+        protected virtual void UpdateOnHit()
         {
             
         }
 
-        public virtual void FixedUpdateOnHit()
+        protected virtual void FixedUpdateOnHit()
         {
             
         }
@@ -121,22 +149,22 @@ namespace GTAlpha
 
         #region Die State Events
 
-        public virtual void StartOnDie()
+        protected virtual void StartOnDie()
         {
             bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Die);
         }
 
-        public virtual void EndOnDie()
+        protected virtual void EndOnDie()
         {
             
         }
 
-        public virtual void UpdateOnDie()
+        protected virtual void UpdateOnDie()
         {
             
         }
 
-        public virtual void FixedUpdateOnDie()
+        protected virtual void FixedUpdateOnDie()
         {
             
         }
@@ -188,6 +216,11 @@ namespace GTAlpha
             SetState(die);
 
             #endregion
+        }
+
+        protected virtual void Start()
+        {
+            State = ActorState.Idle;
         }
 
         protected override void Update()

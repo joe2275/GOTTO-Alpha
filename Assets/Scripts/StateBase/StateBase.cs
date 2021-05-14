@@ -40,11 +40,6 @@ namespace StateBase
             mStateDict = new Dictionary<T, State<T>>();
         }
 
-        protected virtual void Start()
-        {
-            mState?.Start();
-        }
-
         protected virtual void Update()
         {
             mState?.Update();
