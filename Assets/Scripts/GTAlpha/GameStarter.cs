@@ -23,6 +23,7 @@ namespace GTAlpha
             
             ScriptManager.Load();
             StateManager.Load();
+            
             for (int i = 0; i < scriptableObjects.Length; i++)
             {
                 scriptableObjects[i].Load();

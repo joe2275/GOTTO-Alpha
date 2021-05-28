@@ -39,7 +39,7 @@
         public override int DefensivePower => ConvertSecondToFirst(PlayerData.Resistance, Constant.ResistanceIncrease,
             Constant.ResistanceLimitation);
 
-        public override float MoveSpeed { get; }
+        public override float MoveSpeed { get; } = 5.0f;
 
         public Element ElementalType { get; }
 

@@ -9,7 +9,7 @@ namespace GTAlpha
         #region SerializedFields
 
         [SerializeField] private Transform bodyTransform;
-        [SerializeField] private Animator bodyAnimator;
+        [SerializeField] private Animator avatarAnimator;
         [SerializeField] private Transform centerTransform;
         [SerializeField] private Transform forwardTransform;
 
@@ -22,7 +22,7 @@ namespace GTAlpha
         #region Properties
 
         public Transform BodyTransform => bodyTransform;
-        public Animator BodyAnimator => bodyAnimator;
+        public Animator AvatarAnimator => avatarAnimator;
         public Vector3 Forward => forwardTransform.position - centerTransform.position;
         public Status Status { get; protected set; }
         public ActorInput Input { get; protected set; }
@@ -52,7 +52,8 @@ namespace GTAlpha
 
         protected virtual void StartOnIdle()
         {
-            // bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Idle);
+            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Idle);
+            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnIdle()
@@ -80,7 +81,10 @@ namespace GTAlpha
 
         protected virtual void StartOnMove()
         {
-            // bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Move);
+            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Move);
+            avatarAnimator.SetTrigger(Constant.AnimationChanged);
+            avatarAnimator.SetFloat(Constant.AnimationFront, 0.0f);
+            avatarAnimator.SetFloat(Constant.AnimationRight, 0.0f);
         }
 
         protected virtual void EndOnMove()
@@ -96,6 +100,9 @@ namespace GTAlpha
             {
                 State = ActorState.Idle;
             }
+            
+            avatarAnimator.SetFloat(Constant.AnimationFront, movement.y);
+            avatarAnimator.SetFloat(Constant.AnimationRight, movement.x);
         }
 
         protected virtual void FixedUpdateOnMove()
@@ -127,7 +134,7 @@ namespace GTAlpha
 
         protected virtual void StartOnHit()
         {
-            bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Hit);
+            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Hit);
         }
 
         protected virtual void EndOnHit()
@@ -151,7 +158,7 @@ namespace GTAlpha
 
         protected virtual void StartOnDie()
         {
-            bodyAnimator.SetInteger(Constant.AnimationState, ActorState.Die);
+            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Die);
         }
 
         protected virtual void EndOnDie()

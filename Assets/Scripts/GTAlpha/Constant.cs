@@ -5,7 +5,7 @@ namespace GTAlpha
     [CreateAssetMenu(fileName = "New Constant", menuName = "Game Constant", order = 0)]
     public class Constant : GlobalScriptableObject
     {
-        #region Private Static Fields
+        #region Static Fields
         
         private static Constant _main;
         
@@ -13,11 +13,14 @@ namespace GTAlpha
 
         #region Const Fields
 
-        public const string AnimationState = "State";
+        public static int AnimationState { get; } = Animator.StringToHash("State");
+        public static int AnimationChanged { get; } = Animator.StringToHash("Changed");
+        public static int AnimationFront { get; } = Animator.StringToHash("Front");
+        public static int AnimationRight { get; } = Animator.StringToHash("Right");
 
         #endregion
 
-        #region Public Static Properties
+        #region Static Properties
         
         public static float MaxExpCoefficient => _main.maxExpCoefficient;
         public static float MaxExpPower => _main.maxExpPower;
