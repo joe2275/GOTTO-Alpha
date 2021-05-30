@@ -78,13 +78,6 @@ namespace Camera3D
 
         #region Private Methods
 
-        private void Update()
-        {
-            Rotate(new Vector2(Keyboard.current.rightArrowKey.ReadValue() - Keyboard.current.leftArrowKey.ReadValue(),
-                Keyboard.current.upArrowKey.ReadValue() - Keyboard.current.downArrowKey.ReadValue()) * 0.1f);
-            // Rotate(Mouse.current.delta.ReadValue() * 0.1f);
-        }
-
         private void LateUpdate()
         {
             cameraTransform.position = CameraPosition;

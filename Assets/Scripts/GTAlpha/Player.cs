@@ -1,5 +1,6 @@
 ﻿using System;
 using Camera3D;
+using Manager;
 using UnityEngine;
 
 namespace GTAlpha
@@ -61,6 +62,18 @@ namespace GTAlpha
             Input = new PlayerInput(inputMaster);
 
             mCamera = GetComponentInChildren<ThirdPersonCamera>();
+        }
+
+        protected override void Update()
+        {
+            if (StateManager.Pause.State)
+            {
+                return;
+            }
+            
+            base.Update();
+            
+            mCamera.Rotate(mInput.Rotation * SettingsManager.Sensitivity);
         }
 
         #endregion

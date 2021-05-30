@@ -23,11 +23,15 @@ namespace GTAlpha
             
             ScriptManager.Load();
             StateManager.Load();
+            SettingsManager.Load();
             
             for (int i = 0; i < scriptableObjects.Length; i++)
             {
                 scriptableObjects[i].Load();
             }
+            
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }
