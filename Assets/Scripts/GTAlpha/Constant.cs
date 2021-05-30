@@ -5,13 +5,24 @@ namespace GTAlpha
     [CreateAssetMenu(fileName = "New Constant", menuName = "Game Constant", order = 0)]
     public class Constant : GlobalScriptableObject
     {
-        #region Private Static Fields
+        #region Static Fields
         
         private static Constant _main;
         
         #endregion
 
-        #region Public Static Properties
+        #region Const Fields
+
+        public static int AnimationState { get; } = Animator.StringToHash("State");
+        public static int AnimationChanged { get; } = Animator.StringToHash("Changed");
+        public static int AnimationFront { get; } = Animator.StringToHash("Front");
+        public static int AnimationRight { get; } = Animator.StringToHash("Right");
+
+        #endregion
+
+        #region Static Properties
+
+        public static float MaxDegreesDelta => _main.maxDegreesDelta;
         
         public static float MaxExpCoefficient => _main.maxExpCoefficient;
         public static float MaxExpPower => _main.maxExpPower;
@@ -23,15 +34,19 @@ namespace GTAlpha
         public static int StrengthLimitation => _main.strengthLimitation;
         public static float ResistanceIncrease => _main.resistanceIncrease;
         public static int ResistanceLimitation => _main.resistanceLimitation;
+        public static float MaximumHealthPointTimes => _main.maximumHealthPointTimes;
+        public static float MaxHealthPointIncrease => _main.maxHealthPointIncrease;
 
-        public static int PlayerVitality => _main.playerVitality;
-        public static int PlayerEndurance => _main.playerEndurance;
-        public static int PlayerStrength => _main.playerStrength;
-        public static int PlayerResistance => _main.playerResistance;
+        public static int BasePlayerVitality => _main.basePlayerVitality;
+        public static int BasePlayerEndurance => _main.basePlayerEndurance;
+        public static int BasePlayerStrength => _main.basePlayerStrength;
+        public static int BasePlayerResistance => _main.basePlayerResistance;
         
         #endregion
 
         #region Serialize Fields
+
+        [SerializeField] private float maxDegreesDelta = 720.0f;
 
         [SerializeField] private float maxExpCoefficient = 100.0f;
         [SerializeField] private float maxExpPower = 1.5f;
@@ -43,12 +58,14 @@ namespace GTAlpha
         [SerializeField] private int strengthLimitation = 10000;
         [SerializeField] private float resistanceIncrease = 0.01f;
         [SerializeField] private int resistanceLimitation = 10000;
+        [SerializeField] private float maximumHealthPointTimes = 4f;
+        [SerializeField] private float maxHealthPointIncrease = 1.4f;
 
-        [SerializeField] private int playerVitality = 10;
-        [SerializeField] private int playerEndurance = 10;
-        [SerializeField] private int playerStrength = 10;
-        [SerializeField] private int playerResistance = 10;
-
+        [SerializeField] private int basePlayerVitality = 10;
+        [SerializeField] private int basePlayerEndurance = 10;
+        [SerializeField] private int basePlayerStrength = 10;
+        [SerializeField] private int basePlayerResistance = 10;
+        
         #endregion
 
         #region Public Methods

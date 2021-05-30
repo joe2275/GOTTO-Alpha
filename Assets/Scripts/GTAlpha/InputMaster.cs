@@ -85,14 +85,6 @@ namespace GTAlpha
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Skill"",
-                    ""type"": ""Button"",
-                    ""id"": ""7524e835-c04b-403c-ac67-880306dae91a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""Use Item"",
                     ""type"": ""Button"",
                     ""id"": ""363b5d0f-166e-4816-bc84-038e8b6d9a20"",
@@ -455,6 +447,17 @@ namespace GTAlpha
                 },
                 {
                     ""name"": """",
+                    ""id"": ""775cbad0-8f12-42e6-8224-28a462fb74f2"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Skill 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""edde737b-c223-4f4a-a5fa-38b83618e4d1"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
@@ -466,19 +469,19 @@ namespace GTAlpha
                 },
                 {
                     ""name"": """",
-                    ""id"": ""368cda2d-1079-4f63-918f-67f731647592"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""id"": ""65d6fca7-aabc-42ce-af5d-3b332aca667b"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""Skill"",
+                    ""action"": ""Skill 2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""07f791ef-3204-4323-8804-8c9b01d48f0c"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
@@ -500,7 +503,7 @@ namespace GTAlpha
                 {
                     ""name"": """",
                     ""id"": ""019f1b66-a3c6-4ad6-8f10-d3b14b290444"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
@@ -622,7 +625,6 @@ namespace GTAlpha
             m_InGame_Attack2 = m_InGame.FindAction("Attack 2", throwIfNotFound: true);
             m_InGame_Skill1 = m_InGame.FindAction("Skill 1", throwIfNotFound: true);
             m_InGame_Skill2 = m_InGame.FindAction("Skill 2", throwIfNotFound: true);
-            m_InGame_Skill = m_InGame.FindAction("Skill", throwIfNotFound: true);
             m_InGame_UseItem = m_InGame.FindAction("Use Item", throwIfNotFound: true);
             m_InGame_ChangeItem = m_InGame.FindAction("Change Item", throwIfNotFound: true);
             m_InGame_Weapon1 = m_InGame.FindAction("Weapon 1", throwIfNotFound: true);
@@ -685,7 +687,6 @@ namespace GTAlpha
         private readonly InputAction m_InGame_Attack2;
         private readonly InputAction m_InGame_Skill1;
         private readonly InputAction m_InGame_Skill2;
-        private readonly InputAction m_InGame_Skill;
         private readonly InputAction m_InGame_UseItem;
         private readonly InputAction m_InGame_ChangeItem;
         private readonly InputAction m_InGame_Weapon1;
@@ -703,7 +704,6 @@ namespace GTAlpha
             public InputAction @Attack2 => m_Wrapper.m_InGame_Attack2;
             public InputAction @Skill1 => m_Wrapper.m_InGame_Skill1;
             public InputAction @Skill2 => m_Wrapper.m_InGame_Skill2;
-            public InputAction @Skill => m_Wrapper.m_InGame_Skill;
             public InputAction @UseItem => m_Wrapper.m_InGame_UseItem;
             public InputAction @ChangeItem => m_Wrapper.m_InGame_ChangeItem;
             public InputAction @Weapon1 => m_Wrapper.m_InGame_Weapon1;
@@ -742,9 +742,6 @@ namespace GTAlpha
                     @Skill2.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill2;
                     @Skill2.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill2;
                     @Skill2.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill2;
-                    @Skill.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill;
-                    @Skill.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill;
-                    @Skill.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill;
                     @UseItem.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnUseItem;
                     @UseItem.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnUseItem;
                     @UseItem.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnUseItem;
@@ -788,9 +785,6 @@ namespace GTAlpha
                     @Skill2.started += instance.OnSkill2;
                     @Skill2.performed += instance.OnSkill2;
                     @Skill2.canceled += instance.OnSkill2;
-                    @Skill.started += instance.OnSkill;
-                    @Skill.performed += instance.OnSkill;
-                    @Skill.canceled += instance.OnSkill;
                     @UseItem.started += instance.OnUseItem;
                     @UseItem.performed += instance.OnUseItem;
                     @UseItem.canceled += instance.OnUseItem;
@@ -829,7 +823,6 @@ namespace GTAlpha
             void OnAttack2(InputAction.CallbackContext context);
             void OnSkill1(InputAction.CallbackContext context);
             void OnSkill2(InputAction.CallbackContext context);
-            void OnSkill(InputAction.CallbackContext context);
             void OnUseItem(InputAction.CallbackContext context);
             void OnChangeItem(InputAction.CallbackContext context);
             void OnWeapon1(InputAction.CallbackContext context);

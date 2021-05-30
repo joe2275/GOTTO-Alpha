@@ -70,14 +70,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Skill",
-                    "type": "Button",
-                    "id": "7524e835-c04b-403c-ac67-880306dae91a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "Use Item",
                     "type": "Button",
                     "id": "363b5d0f-166e-4816-bc84-038e8b6d9a20",
@@ -440,6 +432,17 @@
                 },
                 {
                     "name": "",
+                    "id": "775cbad0-8f12-42e6-8224-28a462fb74f2",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Player",
+                    "action": "Skill 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "edde737b-c223-4f4a-a5fa-38b83618e4d1",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
@@ -451,19 +454,19 @@
                 },
                 {
                     "name": "",
-                    "id": "368cda2d-1079-4f63-918f-67f731647592",
-                    "path": "<Keyboard>/leftCtrl",
+                    "id": "65d6fca7-aabc-42ce-af5d-3b332aca667b",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "Player",
-                    "action": "Skill",
+                    "action": "Skill 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "07f791ef-3204-4323-8804-8c9b01d48f0c",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "Player",
@@ -485,7 +488,7 @@
                 {
                     "name": "",
                     "id": "019f1b66-a3c6-4ad6-8f10-d3b14b290444",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "Player",
