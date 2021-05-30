@@ -1,4 +1,5 @@
 ﻿using System;
+using Camera3D;
 using UnityEngine;
 
 namespace GTAlpha
@@ -9,6 +10,7 @@ namespace GTAlpha
 
         private PlayerStatus mStatus;
         private PlayerInput mInput;
+        private ThirdPersonCamera mCamera;
 
         #endregion
 
@@ -28,6 +30,24 @@ namespace GTAlpha
 
         #endregion
 
+        #region Move State Events
+
+        protected override void UpdateOnMove()
+        {
+            base.UpdateOnMove();
+            
+            Vector3 cameraForward = mCamera.Forward;
+            cameraForward = new Vector3(cameraForward.x, 0.0f, cameraForward.z);
+
+            Quaternion myRotation = Rotation;
+            Quaternion cameraRotation = Quaternion.LookRotation(cameraForward);
+            
+
+            Rotation = Quaternion.RotateTowards(myRotation, cameraRotation, Constant.MaxDegreesDelta * Time.deltaTime);
+        }
+
+        #endregion
+
         #region Protected Methods
 
         protected override void Awake()
@@ -39,6 +59,8 @@ namespace GTAlpha
 
             Status = new PlayerStatus();
             Input = new PlayerInput(inputMaster);
+
+            mCamera = GetComponentInChildren<ThirdPersonCamera>();
         }
 
         #endregion

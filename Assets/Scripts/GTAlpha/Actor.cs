@@ -24,6 +24,21 @@ namespace GTAlpha
         public Transform BodyTransform => bodyTransform;
         public Animator AvatarAnimator => avatarAnimator;
         public Vector3 Forward => forwardTransform.position - centerTransform.position;
+
+        public Vector3 Right
+        {
+            get
+            {
+                Vector3 forward = Forward;
+                return new Vector3(forward.z, 0.0f, -forward.x);
+            }
+        }
+
+        public Quaternion Rotation
+        {
+            get => bodyTransform.rotation;
+            set => bodyTransform.rotation = value;
+        }
         public Status Status { get; protected set; }
         public ActorInput Input { get; protected set; }
 
@@ -36,14 +51,14 @@ namespace GTAlpha
             transform.Translate(movement, space);
         }
 
-        public void Rotate(Vector3 axis, float angle)
+        public void Rotate(float angle)
         {
-            transform.Rotate(axis, angle);
+            bodyTransform.Rotate(Vector3.up, angle);
         }
 
         public void RotateTo(Vector3 forward)
         {
-            transform.rotation = Quaternion.FromToRotation(Forward, forward);
+            bodyTransform.rotation = Quaternion.FromToRotation(Forward, forward);
         }
 
         #endregion
@@ -114,18 +129,11 @@ namespace GTAlpha
             {
                 movement /= magnitude;
             }
-            // 이동 입력 회전 각도
-            // float movementAngle = Vector2.Angle(Vector2.up, movement);
+
+            Vector3 forward = Forward;
+            Vector3 right = Right;
             
-            // 액터 전방 회전 각도
-            // Vector3 realForward = Forward;
-            // Vector2 forward = new Vector2(realForward.x, realForward.z);
-            // float forwardAngle = Vector2.Angle(Vector2.up, forward);
-            
-            // 액터 전방 기준 이동
-            Vector3 realMovement = new Vector3(movement.x, 0.0f, movement.y);
-            
-            Move(realMovement * (Status.MoveSpeed * Time.fixedDeltaTime));
+            Move((forward * movement.y + right * movement.x) * (Status.MoveSpeed * Time.fixedDeltaTime), Space.World);
         }
 
         #endregion

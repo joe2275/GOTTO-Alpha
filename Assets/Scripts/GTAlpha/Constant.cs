@@ -21,6 +21,8 @@ namespace GTAlpha
         #endregion
 
         #region Static Properties
+
+        public static float MaxDegreesDelta => _main.maxDegreesDelta;
         
         public static float MaxExpCoefficient => _main.maxExpCoefficient;
         public static float MaxExpPower => _main.maxExpPower;
@@ -43,6 +45,8 @@ namespace GTAlpha
         #endregion
 
         #region Serialize Fields
+
+        [SerializeField] private float maxDegreesDelta = 720.0f;
 
         [SerializeField] private float maxExpCoefficient = 100.0f;
         [SerializeField] private float maxExpPower = 1.5f;

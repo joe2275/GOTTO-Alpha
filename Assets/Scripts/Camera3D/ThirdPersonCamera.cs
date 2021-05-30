@@ -36,59 +36,20 @@ namespace Camera3D
                 Vector3 cameraPosition = position;
                 Vector3 rayPosition = position;
 
-                // Ray ray = new Ray(cameraPosition, backward);
-                //
-                // if (Physics.Raycast(ray, out RaycastHit hit, backwardDistance, obstacleLayer))
-                // {
-                //     cameraPosition += backward * hit.distance;
-                // }
-                // else
-                // {
-                //     cameraPosition += backward * backwardDistance;
-                // }
-                
                 cameraPosition += backward * backwardDistance;
 
                 Vector3 right = new Vector3(forward.z, 0.0f, -forward.x).normalized;
                 cameraPosition += right * rightDistance;
                 rayPosition += right * rightDistance;
 
-                // ray = new Ray(cameraPosition, right);
-                //
-                // if (Physics.Raycast(ray, out hit, rightDistance, obstacleLayer))
-                // {
-                //     cameraPosition += right * hit.distance;
-                // }
-                // else
-                // {
-                //     cameraPosition += right * rightDistance;
-                // }
-
                 Vector3 up = new Vector3(forward.y * right.z - forward.z * right.y,
                     forward.z * right.x - forward.x * right.z, forward.x * right.y - forward.y * right.x).normalized;
                 cameraPosition += up * upDistance;
                 rayPosition += up * upDistance;
 
-                // ray = new Ray(cameraPosition, up);
-                //
-                // if (Physics.Raycast(ray, out hit, upDistance, obstacleLayer))
-                // {
-                //     cameraPosition += up * hit.distance;
-                // }
-                // else
-                // {
-                //     cameraPosition += up * upDistance;
-                // }
-
                 Ray ray = new Ray(rayPosition, backward);
-                if (Physics.Raycast(ray, out RaycastHit hit, backwardDistance, obstacleLayer))
-                {
-                    return hit.point;
-                }
-                else
-                {
-                    return cameraPosition;
-                }
+                
+                return Physics.Raycast(ray, out RaycastHit hit, backwardDistance, obstacleLayer) ? hit.point : cameraPosition;
             }
         }
 
@@ -119,7 +80,8 @@ namespace Camera3D
 
         private void Update()
         {
-            Rotate(new Vector2(Keyboard.current.rightArrowKey.ReadValue() - Keyboard.current.leftArrowKey.ReadValue(), Keyboard.current.upArrowKey.ReadValue() - Keyboard.current.downArrowKey.ReadValue()) * 0.1f);
+            Rotate(new Vector2(Keyboard.current.rightArrowKey.ReadValue() - Keyboard.current.leftArrowKey.ReadValue(),
+                Keyboard.current.upArrowKey.ReadValue() - Keyboard.current.downArrowKey.ReadValue()) * 0.1f);
             // Rotate(Mouse.current.delta.ReadValue() * 0.1f);
         }
 
