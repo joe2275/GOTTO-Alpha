@@ -1,5 +1,4 @@
-﻿using System;
-using Camera3D;
+﻿using Camera3D;
 using Manager;
 using UnityEngine;
 

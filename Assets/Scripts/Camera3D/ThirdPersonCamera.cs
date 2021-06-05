@@ -18,6 +18,8 @@ namespace Camera3D
         [SerializeField] private float rightDistance;
         [SerializeField] private float upDistance;
 
+        [SerializeField] private float obstacleDistance = 0.0f;
+
         #endregion
 
         #region Properties
@@ -48,8 +50,12 @@ namespace Camera3D
                 rayPosition += up * upDistance;
 
                 Ray ray = new Ray(rayPosition, backward);
-                
-                return Physics.Raycast(ray, out RaycastHit hit, backwardDistance, obstacleLayer) ? hit.point : cameraPosition;
+                if (Physics.Raycast(ray, out RaycastHit hit, backwardDistance + obstacleDistance, obstacleLayer))
+                {
+                    cameraPosition = rayPosition + backward * (hit.distance - obstacleDistance);
+                }
+
+                return cameraPosition;
             }
         }
 
@@ -81,7 +87,7 @@ namespace Camera3D
         private void LateUpdate()
         {
             cameraTransform.position = CameraPosition;
-            cameraTransform.rotation = Quaternion.LookRotation(Forward) * Quaternion.FromToRotation(Forward, Focus);
+            cameraTransform.rotation = Quaternion.LookRotation(Focus);
         }
 
         #endregion

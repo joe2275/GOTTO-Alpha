@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GTAlpha
@@ -6,70 +7,19 @@ namespace GTAlpha
     [Serializable]
     public class PlayerData
     {
-        #region Core Area
-
-        private static PlayerData _current;
-        private static int _currentKey = -1;
+        public static PlayerData Current { get; set; }
         
-        public static int CurrentKey
-        {
-            get => _currentKey;
-            set
-            {
-                if (value < 0)
-                {
-                    _currentKey = -1;
-                    return;
-                }
-                
-                _currentKey = value;
-                string keyString = _currentKey.ToString();
-                if (PlayerPrefs.HasKey(keyString))
-                {
-                    _current = JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString(keyString));
-                }
-                else
-                {
-                    _current = new PlayerData();
-                }
-            }
-        }
+        #region Serialized Fields
 
-        public static PlayerData Get(int key)
-        {
-            string keyString = key.ToString();
-            return PlayerPrefs.HasKey(keyString)
-                ? JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString(keyString))
-                : null;
-        }
+        [SerializeField] private int level = 1;
+        [SerializeField] private int exp;
 
-        public static bool Delete(int key)
-        {
-            string keyString = key.ToString();
-            if (PlayerPrefs.HasKey(keyString))
-            {
-                PlayerPrefs.DeleteKey(key.ToString());
-                return true;
-            }
+        [SerializeField] private int possessions;
 
-            return false;
-        }
-
-        public static bool Save()
-        {
-            if (_currentKey < 0)
-            {
-                return false;
-            }
-            
-            PlayerPrefs.SetString(_currentKey.ToString(), JsonUtility.ToJson(_current));
-            PlayerPrefs.Save();
-            
-#if (UNITY_IOS || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX)
-#elif UNITY_ANDROID
-#endif
-            return true;
-        }
+        [SerializeField] private int vitality;
+        [SerializeField] private int endurance;
+        [SerializeField] private int strength;
+        [SerializeField] private int resistance;
 
         #endregion
 
@@ -77,117 +27,105 @@ namespace GTAlpha
 
         public static int Level
         {
-            get => _current.mLevel;
+            get => Current.level;
+            set => Current.level = Mathf.Max(value, 1);
         }
 
-        public static int MaxExp => (int) (Constant.MaxExpCoefficient * Mathf.Pow(_current.mLevel, Constant.MaxExpPower));
+        public static int MaxExp => (int) (PlayerInfo.MaxExpCoefficient * Mathf.Pow(Current.level, PlayerInfo.MaxExpPower));
 
         public static int Exp
         {
-            get => _current.mExp;
+            get => Current.exp;
             set
             {
                 int maxExp = MaxExp;
                 while (value >= maxExp)
                 {
                     value -= maxExp;
-                    _current.mLevel++;
+                    Current.level++;
                     maxExp = MaxExp;
                 }
 
-                _current.mExp = value;
+                Current.exp = value;
             }
         }
 
         public static int Possessions
         {
-            get => _current.mPossessions;
-            set => _current.mPossessions = Mathf.Max(value, 0);
+            get => Current.possessions;
+            set => Current.possessions = Mathf.Max(value, 0);
         }
 
-        public static int Promotion => _current.mLevel - (_current.mVitality + _current.mEndurance + _current.mStrength + _current.mResistance + 1);
+        public static int Promotion => Current.level - (Current.vitality + Current.endurance + Current.strength + Current.resistance + 1);
 
         public static int Vitality
         {
-            get => _current.mVitality;
+            get => Current.vitality;
             set
             {
                 int promotion = Promotion;
-                int diff = value - _current.mVitality;
+                int diff = value - Current.vitality;
 
                 if (diff > promotion)
                 {
                     return;
                 }
 
-                _current.mVitality = value;
+                Current.vitality = value;
             }
         }
 
         public static int Endurance
         {
-            get => _current.mEndurance;
+            get => Current.endurance;
             set
             {
                 int promotion = Promotion;
-                int diff = value - _current.mEndurance;
+                int diff = value - Current.endurance;
 
                 if (diff > promotion)
                 {
                     return;
                 }
 
-                _current.mEndurance = value;
+                Current.endurance = value;
             }
         }
-        
+
         public static int Strength
         {
-            get => _current.mStrength;
+            get => Current.strength;
             set
             {
                 int promotion = Promotion;
-                int diff = value - _current.mStrength;
+                int diff = value - Current.strength;
 
                 if (diff > promotion)
                 {
                     return;
                 }
 
-                _current.mStrength = value;
+                Current.strength = value;
             }
         }
-        
+
         public static int Resistance
         {
-            get => _current.mResistance;
+            get => Current.resistance;
             set
             {
                 int promotion = Promotion;
-                int diff = value - _current.mResistance;
+                int diff = value - Current.resistance;
 
                 if (diff > promotion)
                 {
                     return;
                 }
 
-                _current.mResistance = value;
+                Current.resistance = value;
             }
         }
 
-        #endregion
-
-        #region Private Fields
-
-        private int mLevel = 1;
-        private int mExp;
-
-        private int mPossessions;
-
-        private int mVitality;
-        private int mEndurance;
-        private int mStrength;
-        private int mResistance;
 
         #endregion
     }

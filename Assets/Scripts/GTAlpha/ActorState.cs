@@ -11,6 +11,7 @@ namespace GTAlpha
         public const int Move = 1;
         public const int Hit = 2;
         public const int Die = 3;
+        public const int Attack = 4;
 
         #endregion
 

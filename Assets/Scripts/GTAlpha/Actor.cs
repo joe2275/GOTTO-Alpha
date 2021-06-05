@@ -143,6 +143,7 @@ namespace GTAlpha
         protected virtual void StartOnHit()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Hit);
+            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnHit()
@@ -167,6 +168,7 @@ namespace GTAlpha
         protected virtual void StartOnDie()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Die);
+            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnDie()
@@ -180,6 +182,31 @@ namespace GTAlpha
         }
 
         protected virtual void FixedUpdateOnDie()
+        {
+            
+        }
+
+        #endregion
+
+        #region Attack State Events
+
+        protected virtual void StartOnAttack()
+        {
+            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Attack);
+            avatarAnimator.SetTrigger(Constant.AnimationChanged);
+        }
+
+        protected virtual void EndOnAttack()
+        {
+            
+        }
+
+        protected virtual void UpdateOnAttack()
+        {
+            
+        }
+
+        protected virtual void FixedUpdateOnAttack()
         {
             
         }
@@ -229,6 +256,17 @@ namespace GTAlpha
                 OnStart = StartOnDie, OnEnd = EndOnDie, OnUpdate = UpdateOnDie, OnFixedUpdate = FixedUpdateOnDie
             };
             SetState(die);
+
+            #endregion
+
+            #region Set Attack State
+
+            ActorState attack = new ActorState(ActorState.Attack)
+            {
+                OnStart = StartOnAttack, OnEnd = EndOnAttack, OnUpdate = UpdateOnAttack,
+                OnFixedUpdate = FixedUpdateOnAttack
+            };
+            SetState(attack);
 
             #endregion
         }

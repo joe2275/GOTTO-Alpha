@@ -11,9 +11,9 @@
 
         private static int GetMaxHealthPointAddition(int maxHealthPoint)
         {
-            float limitation = Constant.MaximumHealthPointTimes * maxHealthPoint;
-            return -(int) (Constant.MaxHealthPointIncrease * limitation * limitation /
-                (PlayerData.Possessions + Constant.MaxHealthPointIncrease * limitation) + limitation);
+            float limitation = PlayerInfo.MaximumHealthPointTimes * maxHealthPoint;
+            return -(int) (PlayerInfo.MaxHealthPointIncrease * limitation * limitation /
+                (PlayerData.Possessions + PlayerInfo.MaxHealthPointIncrease * limitation) + limitation);
         }
 
         #endregion
@@ -24,20 +24,20 @@
         {
             get
             {
-                int maxHealthPoint = ConvertSecondToFirst(PlayerData.Vitality, Constant.VitalityIncrease,
-                    Constant.VitalityLimitation);
+                int maxHealthPoint = ConvertSecondToFirst(PlayerData.Vitality, PlayerInfo.VitalityIncrease,
+                    PlayerInfo.VitalityLimitation);
                 return maxHealthPoint + GetMaxHealthPointAddition(maxHealthPoint);
             }
         }
 
-        public override int MaxStaminaPoint => ConvertSecondToFirst(PlayerData.Endurance, Constant.EnduranceIncrease,
-            Constant.EnduranceLimitation);
+        public override int MaxStaminaPoint => ConvertSecondToFirst(PlayerData.Endurance, PlayerInfo.EnduranceIncrease,
+            PlayerInfo.EnduranceLimitation);
 
-        public override int OffensivePower => ConvertSecondToFirst(PlayerData.Strength, Constant.StrengthIncrease,
-            Constant.StrengthLimitation);
+        public override int OffensivePower => ConvertSecondToFirst(PlayerData.Strength, PlayerInfo.StrengthIncrease,
+            PlayerInfo.StrengthLimitation);
 
-        public override int DefensivePower => ConvertSecondToFirst(PlayerData.Resistance, Constant.ResistanceIncrease,
-            Constant.ResistanceLimitation);
+        public override int DefensivePower => ConvertSecondToFirst(PlayerData.Resistance, PlayerInfo.ResistanceIncrease,
+            PlayerInfo.ResistanceLimitation);
 
         public override float MoveSpeed { get; } = 5.0f;
 

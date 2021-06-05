@@ -20,7 +20,15 @@ namespace GTAlpha
 
             _isStarted = true;
             DontDestroyOnLoad(gameObject);
+
+            #region Temporary Region
+
+            SaveData.CurrentKey = 0;
+
+            #endregion
             
+            SaveData.Load();
+
             ScriptManager.Load();
             StateManager.Load();
             SettingsManager.Load();
