@@ -13,9 +13,9 @@ namespace StateBase
             get => mState.Value;
             set
             {
-                mState?.End();
+                mState?.OnEnd?.Invoke();
                 mState = mStateDict[value];
-                mState.Start();
+                mState.OnStart?.Invoke();
             }
         }
 
@@ -42,12 +42,12 @@ namespace StateBase
 
         protected virtual void Update()
         {
-            mState?.Update();
+            mState?.OnUpdate?.Invoke();
         }
 
         protected virtual void FixedUpdate()
         {
-            mState?.FixedUpdate();
+            mState?.OnFixedUpdate?.Invoke();
         }
     }
 }
