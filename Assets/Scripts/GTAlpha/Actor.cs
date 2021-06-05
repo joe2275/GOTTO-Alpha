@@ -6,6 +6,16 @@ namespace GTAlpha
 {
     public class Actor : StateBase<int>
     {
+        #region State Constant
+
+        public const int IdleState = 0;
+        public const int MoveState = 1;
+        public const int HitState = 2;
+        public const int DieState = 3;
+        public const int AttackState = 4;
+
+        #endregion
+
         #region SerializedFields
 
         [SerializeField] private Transform bodyTransform;
@@ -39,6 +49,7 @@ namespace GTAlpha
             get => bodyTransform.rotation;
             set => bodyTransform.rotation = value;
         }
+
         public Status Status { get; protected set; }
         public ActorInput Input { get; protected set; }
 
@@ -67,13 +78,12 @@ namespace GTAlpha
 
         protected virtual void StartOnIdle()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Idle);
+            avatarAnimator.SetInteger(Constant.AnimationState, IdleState);
             avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnIdle()
         {
-            
         }
 
         protected virtual void UpdateOnIdle()
@@ -81,13 +91,12 @@ namespace GTAlpha
             Vector2 movement = Input.Movement;
             if (Mathf.Abs(movement.x) > Mathf.Epsilon || Mathf.Abs(movement.y) > Mathf.Epsilon)
             {
-                State = ActorState.Move;
+                State = MoveState;
             }
         }
 
         protected virtual void FixedUpdateOnIdle()
         {
-            
         }
 
         #endregion
@@ -96,7 +105,7 @@ namespace GTAlpha
 
         protected virtual void StartOnMove()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Move);
+            avatarAnimator.SetInteger(Constant.AnimationState, MoveState);
             avatarAnimator.SetTrigger(Constant.AnimationChanged);
             avatarAnimator.SetFloat(Constant.AnimationFront, 0.0f);
             avatarAnimator.SetFloat(Constant.AnimationRight, 0.0f);
@@ -104,7 +113,6 @@ namespace GTAlpha
 
         protected virtual void EndOnMove()
         {
-            
         }
 
         protected virtual void UpdateOnMove()
@@ -113,9 +121,9 @@ namespace GTAlpha
 
             if (Mathf.Abs(movement.x) < Mathf.Epsilon && Mathf.Abs(movement.y) < Mathf.Epsilon)
             {
-                State = ActorState.Idle;
+                State = IdleState;
             }
-            
+
             avatarAnimator.SetFloat(Constant.AnimationFront, movement.y);
             avatarAnimator.SetFloat(Constant.AnimationRight, movement.x);
         }
@@ -132,7 +140,7 @@ namespace GTAlpha
 
             Vector3 forward = Forward;
             Vector3 right = Right;
-            
+
             Move((forward * movement.y + right * movement.x) * (Status.MoveSpeed * Time.fixedDeltaTime), Space.World);
         }
 
@@ -142,23 +150,20 @@ namespace GTAlpha
 
         protected virtual void StartOnHit()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Hit);
+            avatarAnimator.SetInteger(Constant.AnimationState, HitState);
             avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnHit()
         {
-            
         }
 
         protected virtual void UpdateOnHit()
         {
-            
         }
 
         protected virtual void FixedUpdateOnHit()
         {
-            
         }
 
         #endregion
@@ -167,23 +172,20 @@ namespace GTAlpha
 
         protected virtual void StartOnDie()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Die);
+            avatarAnimator.SetInteger(Constant.AnimationState, DieState);
             avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnDie()
         {
-            
         }
 
         protected virtual void UpdateOnDie()
         {
-            
         }
 
         protected virtual void FixedUpdateOnDie()
         {
-            
         }
 
         #endregion
@@ -192,23 +194,20 @@ namespace GTAlpha
 
         protected virtual void StartOnAttack()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, ActorState.Attack);
+            avatarAnimator.SetInteger(Constant.AnimationState, AttackState);
             avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnAttack()
         {
-            
         }
 
         protected virtual void UpdateOnAttack()
         {
-            
         }
 
         protected virtual void FixedUpdateOnAttack()
         {
-            
         }
 
         #endregion
@@ -221,7 +220,7 @@ namespace GTAlpha
 
             #region Set Idle State
 
-            ActorState idle = new ActorState(ActorState.Idle)
+            State<int> idle = new State<int>(IdleState)
             {
                 OnStart = StartOnIdle, OnEnd = EndOnIdle, OnUpdate = UpdateOnIdle, OnFixedUpdate = FixedUpdateOnIdle
             };
@@ -231,7 +230,7 @@ namespace GTAlpha
 
             #region Set Move State
 
-            ActorState move = new ActorState(ActorState.Move)
+            State<int> move = new State<int>(MoveState)
             {
                 OnStart = StartOnMove, OnEnd = EndOnMove, OnUpdate = UpdateOnMove, OnFixedUpdate = FixedUpdateOnMove
             };
@@ -241,7 +240,7 @@ namespace GTAlpha
 
             #region Set Hit State
 
-            ActorState hit = new ActorState(ActorState.Hit)
+            State<int> hit = new State<int>(HitState)
             {
                 OnStart = StartOnHit, OnEnd = EndOnHit, OnUpdate = UpdateOnHit, OnFixedUpdate = FixedUpdateOnHit
             };
@@ -251,7 +250,7 @@ namespace GTAlpha
 
             #region Set Die State
 
-            ActorState die = new ActorState(ActorState.Die)
+            State<int> die = new State<int>(DieState)
             {
                 OnStart = StartOnDie, OnEnd = EndOnDie, OnUpdate = UpdateOnDie, OnFixedUpdate = FixedUpdateOnDie
             };
@@ -261,7 +260,7 @@ namespace GTAlpha
 
             #region Set Attack State
 
-            ActorState attack = new ActorState(ActorState.Attack)
+            State<int> attack = new State<int>(AttackState)
             {
                 OnStart = StartOnAttack, OnEnd = EndOnAttack, OnUpdate = UpdateOnAttack,
                 OnFixedUpdate = FixedUpdateOnAttack
@@ -273,7 +272,7 @@ namespace GTAlpha
 
         protected virtual void Start()
         {
-            State = ActorState.Idle;
+            State = IdleState;
         }
 
         protected override void Update()
@@ -282,7 +281,7 @@ namespace GTAlpha
             {
                 return;
             }
-            
+
             base.Update();
         }
 
@@ -292,7 +291,7 @@ namespace GTAlpha
             {
                 return;
             }
-            
+
             base.FixedUpdate();
         }
 

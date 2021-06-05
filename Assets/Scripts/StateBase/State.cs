@@ -1,19 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace StateBase
 {
-    public abstract class State<T> 
+    public class State<T> 
     {
-        public T Value { get; private set; }
+        public T Value { get; }
 
         public State(T value)
         {
             Value = value;
         }
 
-        public abstract void Start();
-        public abstract void Update();
-        public abstract void FixedUpdate();
-        public abstract void End();
+        public Action OnStart;
+        public Action OnEnd;
+        public Action OnUpdate;
+        public Action OnFixedUpdate;
     }
 }
