@@ -5,9 +5,9 @@ namespace GTAlpha
 
     public class Weapon : MonoBehaviour
     {
-        public static readonly string[] Names = 
+        public static readonly string[] Keys = 
         {
-            "Something"
+            "Testing Double-Edged Sword"
         };
         
         

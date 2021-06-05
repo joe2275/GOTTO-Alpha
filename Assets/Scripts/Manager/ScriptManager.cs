@@ -32,22 +32,16 @@ namespace Manager
             enumerator.Dispose();
         }
 
-        public static string GetScript(string tag)
+        public static bool HasKey(string key)
         {
-            return _scriptDict[tag][Language.Current];
+            return key != null && _scriptDict.ContainsKey(key);
+        }
+        
+        public static string GetScript(string key)
+        {
+            return _scriptDict[key][Language.Current];
         }
 
-        public static bool HasTag(string tag)
-        {
-            return tag != null && _scriptDict.ContainsKey(tag);
-        }
-
-        /// <summary>
-        /// Script.csv에서 읽어온 Script 중 tag에 위치한 script에 parameters를 포매팅해서 반환하는 메소드
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
         public static string GetScript(string tag, params object[] parameters)
         {
             return string.Format(_scriptDict[tag][Language.Current], parameters);

@@ -9,7 +9,7 @@ namespace GTAlpha
     
     public class Consumption : MonoBehaviour
     {
-        public static readonly string[] Names = 
+        public static readonly string[] Keys = 
         {
             "Something"
         };

@@ -12,20 +12,20 @@ namespace GTAlpha
     {
         #region Serialized Fields
 
-        [SerializeField] private string name;
+        [SerializeField] private string key;
 
         #endregion
 
 
         #region Properties
 
-        public string Name => name;
+        public string Key => key;
 
         #endregion
 
-        public AccessoryData(string name)
+        public AccessoryData(string key)
         {
-            this.name = name;
+            this.key = key;
         }
     }
 }

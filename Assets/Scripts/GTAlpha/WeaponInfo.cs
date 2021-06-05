@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Manager;
+using UnityEngine;
 
 namespace GTAlpha
 {
@@ -10,8 +11,19 @@ namespace GTAlpha
     public class WeaponInfo : ScriptableObject
     {
         #region Serialized Fields
-
         
+        [SerializeField] private Sprite image;
+        [SerializeField] private string nameKey;
+
+        #endregion
+
+        #region Properties
+
+        public Sprite Image => image;
+
+        public string NameKey => nameKey;
+        public string Name => ScriptManager.HasKey(nameKey) ? ScriptManager.GetScript(nameKey) : "None";
+
 
         #endregion
     }

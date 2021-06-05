@@ -49,9 +49,9 @@ namespace GTAlpha
 
         #region Weapon Methods
 
-        public static WeaponData GetWeaponData(string name)
+        public static WeaponData GetWeaponData(string key)
         {
-            if (name is null)
+            if (key is null)
             {
                 Debug.LogError("Weapon's Name Must Not Be Null!");
                 return null;
@@ -60,13 +60,13 @@ namespace GTAlpha
             string[] weaponIndexArray = _current.weaponIndexArray;
             for (int i = 0; i < weaponIndexArray.Length; i++)
             {
-                if (weaponIndexArray[i].Equals(name))
+                if (weaponIndexArray[i].Equals(key))
                 {
                     return _current.weaponDataArray[i];
                 }
             }
             
-            Debug.LogErrorFormat("Not Exist Weapon's Name! - {0}", name);
+            Debug.LogErrorFormat("Not Exist Weapon's Name! - {0}", key);
             return null;
         }
 
@@ -79,6 +79,17 @@ namespace GTAlpha
             }
             
             return _current.weaponDataArray[index];
+        }
+
+        public static string SeekWeaponSlot(int equipIndex)
+        {
+            if (equipIndex < 0 || equipIndex >= WeaponSlotCount)
+            {
+                Debug.LogErrorFormat("Out of Weapon Equip Slot Index - Count : {0}, Index : {1}", WeaponSlotCount, equipIndex);
+                return null;
+            }
+
+            return _current.weaponSlotArray[equipIndex];
         }
 
         public static bool EquipWeapon(int dataIndex, int equipIndex)
@@ -102,22 +113,43 @@ namespace GTAlpha
             }
             
             string[] weaponSlotArray = _current.weaponSlotArray;
-            string weaponName = _current.weaponIndexArray[dataIndex];
+            string weaponKey = _current.weaponIndexArray[dataIndex];
             
             // 장착하려는 무기가 이미 장착된 상태라면, 장착하려는 곳에 있는 무기와 장착되어 있는 무기의 위치를 서로 바꾼다.
             for (int i = 0; i < WeaponSlotCount; i++)
             {
-                if (!(weaponSlotArray[i] is null) && weaponName.Equals(weaponSlotArray[i]))
+                if (!(weaponSlotArray[i] is null) && weaponKey.Equals(weaponSlotArray[i]))
                 {
                     string temp = weaponSlotArray[equipIndex];
-                    weaponSlotArray[equipIndex] = weaponName;
+                    weaponSlotArray[equipIndex] = weaponKey;
                     weaponSlotArray[i] = temp;
                     return true;
                 }
             }
 
-            weaponSlotArray[equipIndex] = weaponName;
+            weaponSlotArray[equipIndex] = weaponKey;
             return true;
+        }
+
+        public static bool EquipWeapon(string key, int equipIndex)
+        {
+            if (equipIndex < 0 || equipIndex >= WeaponSlotCount)
+            {
+                Debug.LogErrorFormat("Out of Weapon Equip Slot Index - Count : {0}, Index : {1}", WeaponSlotCount, equipIndex);
+                return false;
+            }
+
+            string[] weaponIndexArray = _current.weaponIndexArray;
+            for (int i = 0; i < weaponIndexArray.Length; i++)
+            {
+                if (weaponIndexArray[i].Equals(key))
+                {
+                    return EquipWeapon(i, equipIndex);
+                }
+            }
+
+            Debug.LogErrorFormat("Not Exist Weapon's Name! - {0}", key);
+            return false;
         }
 
         public static bool UnEquipWeapon(int equipIndex)
@@ -131,14 +163,31 @@ namespace GTAlpha
             _current.weaponSlotArray[equipIndex] = "";
             return true;
         }
-        
+
+        public static bool UnEquipWeapon(string key)
+        {
+            string[] weaponSlotArray = _current.weaponSlotArray;
+
+            for (int i = 0; i < weaponSlotArray.Length; i++)
+            {
+                if (weaponSlotArray[i].Equals(key))
+                {
+                    weaponSlotArray[i] = "";
+                    return true;
+                }
+            }
+
+            Debug.LogErrorFormat("Not Equipped Weapon! - {0}", key);
+            return false;
+        }
+
         #endregion
 
         #region Consumption Methods
 
-        public static int GetConsumptionCount(string name)
+        public static int GetConsumptionCount(string key)
         {
-            if (name is null)
+            if (key is null)
             {
                 Debug.LogError("Consumption's Name Must Not Be Null!");
                 return -1;
@@ -147,13 +196,13 @@ namespace GTAlpha
             string[] consumptionIndexArray = _current.consumptionIndexArray;
             for (int i = 0; i < consumptionIndexArray.Length; i++)
             {
-                if (consumptionIndexArray[i].Equals(name))
+                if (consumptionIndexArray[i].Equals(key))
                 {
                     return _current.consumptionCountArray[i];
                 }
             }
             
-            Debug.LogErrorFormat("Not Exist Consumption's Name! - {0}", name);
+            Debug.LogErrorFormat("Not Exist Consumption's Name! - {0}", key);
             return -1;
         }
 
@@ -168,9 +217,9 @@ namespace GTAlpha
             return _current.consumptionCountArray[index];
         }
 
-        public static bool SetConsumptionCount(string name, int count)
+        public static bool SetConsumptionCount(string key, int count)
         {
-            if (name is null)
+            if (key is null)
             {
                 Debug.LogError("Consumption's Name Must Not Be Null!");
                 return false;
@@ -185,14 +234,14 @@ namespace GTAlpha
             string[] consumptionIndexArray = _current.consumptionIndexArray;
             for (int i = 0; i < consumptionIndexArray.Length; i++)
             {
-                if (consumptionIndexArray[i].Equals(name))
+                if (consumptionIndexArray[i].Equals(key))
                 {
                     _current.consumptionCountArray[i] = count;
                     return true;
                 }
             }
             
-            Debug.LogErrorFormat("Not Exist Consumption's Name! - {0}", name);
+            Debug.LogErrorFormat("Not Exist Consumption's Name! - {0}", key);
             return false;
         }
         
@@ -253,6 +302,27 @@ namespace GTAlpha
             return true;
         }
 
+        public static bool EquipConsumption(string key, int equipIndex)
+        {
+            if (equipIndex < 0 || equipIndex >= ConsumptionSlotCount)
+            {
+                Debug.LogErrorFormat("Out of Consumption Slot Index - Count : {0}, Index : {1}", ConsumptionSlotCount, equipIndex);
+                return false;
+            }
+            
+            string[] consumptionIndexArray = _current.consumptionIndexArray;
+            for (int i = 0; i < consumptionIndexArray.Length; i++)
+            {
+                if (consumptionIndexArray[i].Equals(key))
+                {
+                    return EquipConsumption(i, equipIndex);
+                }
+            }
+
+            Debug.LogErrorFormat("Not Exist Consumption's Name! - {0}", key);
+            return false;
+        }
+
         public static bool UnEquipConsumption(int equipIndex)
         {
             if (equipIndex < 0 || equipIndex >= ConsumptionSlotCount)
@@ -263,6 +333,23 @@ namespace GTAlpha
 
             _current.consumptionSlotArray[equipIndex] = "";
             return true;
+        }
+
+        public static bool UnEquipConsumption(string key)
+        {
+            string[] consumptionSlotArray = _current.consumptionSlotArray;
+
+            for (int i = 0; i < consumptionSlotArray.Length; i++)
+            {
+                if (consumptionSlotArray[i].Equals(key))
+                {
+                    consumptionSlotArray[i] = "";
+                    return true;
+                }
+            }
+
+            Debug.LogErrorFormat("Not Equipped Consumption! - {0}", key);
+            return false;
         }
 
         #endregion
@@ -285,8 +372,8 @@ namespace GTAlpha
             // 저장된 Weapon 관련 정보가 존재하지 않는 경우
             if (weaponIndexArray is null || weaponDataArray is null)
             {
-                weaponIndexArray = Weapon.Names;
-                weaponDataArray = new WeaponData[Weapon.Names.Length];
+                weaponIndexArray = Weapon.Keys;
+                weaponDataArray = new WeaponData[Weapon.Keys.Length];
                 for (int i = 0; i < weaponDataArray.Length; i++)
                 {
                     weaponDataArray[i] = new WeaponData();
@@ -296,8 +383,8 @@ namespace GTAlpha
             else
             {
                 // Weapon 관련 정보 갱신
-                string[] newWeaponIndexArray = Weapon.Names;
-                WeaponData[] newWeaponDataArray = new WeaponData[Weapon.Names.Length];
+                string[] newWeaponIndexArray = Weapon.Keys;
+                WeaponData[] newWeaponDataArray = new WeaponData[Weapon.Keys.Length];
 
                 for (int i = 0; i < newWeaponDataArray.Length; i++)
                 {
@@ -351,13 +438,13 @@ namespace GTAlpha
 
             if (consumptionIndexArray is null || consumptionCountArray is null)
             {
-                consumptionIndexArray = Consumption.Names;
-                consumptionCountArray = new int[Consumption.Names.Length];
+                consumptionIndexArray = Consumption.Keys;
+                consumptionCountArray = new int[Consumption.Keys.Length];
             }
             else
             {
-                string[] newConsumptionIndexArray = Consumption.Names;
-                int[] newConsumptionCountArray = new int[Consumption.Names.Length];
+                string[] newConsumptionIndexArray = Consumption.Keys;
+                int[] newConsumptionCountArray = new int[Consumption.Keys.Length];
 
                 for (int i = 0; i < newConsumptionCountArray.Length; i++)
                 {
@@ -396,16 +483,16 @@ namespace GTAlpha
 
             #region Accessory 관련 정보 처리
 
-            string[] accessoryNames = Accessory.Names;
+            string[] accessoryKeys = Accessory.Keys;
             for (int i = 0; i < accessoryDataList.Count; i++)
             {
                 bool isExist = false;
                 
                 AccessoryData accessoryData = accessoryDataList[i];
                 
-                for (int j = 0; j < accessoryNames.Length; j++)
+                for (int j = 0; j < accessoryKeys.Length; j++)
                 {
-                    if (accessoryData.Name.Equals(accessoryNames[j]))
+                    if (accessoryData.Key.Equals(accessoryKeys[j]))
                     {
                         isExist = true;
                         break;
