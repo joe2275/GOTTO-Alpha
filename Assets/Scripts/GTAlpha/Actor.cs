@@ -12,7 +12,8 @@ namespace GTAlpha
         public const int MoveState = 1;
         public const int HitState = 2;
         public const int DieState = 3;
-        public const int AttackState = 4;
+        public const int ReadyToAttackState = 4;
+        public const int AttackState = 5;
 
         #endregion
 
@@ -190,6 +191,31 @@ namespace GTAlpha
 
         #endregion
 
+        #region Ready To Attack State Events
+
+        protected virtual void StartOnReadyToAttack()
+        {
+            avatarAnimator.SetInteger(Constant.AnimationState, ReadyToAttackState);
+            avatarAnimator.SetTrigger(Constant.AnimationChanged);
+        }
+
+        protected virtual void EndOnReadyToAttack()
+        {
+            
+        }
+
+        protected virtual void UpdateOnReadyToAttack()
+        {
+            
+        }
+
+        protected virtual void FixedUpdateOnReadyToAttack()
+        {
+            
+        }
+
+        #endregion
+
         #region Attack State Events
 
         protected virtual void StartOnAttack()
@@ -266,6 +292,17 @@ namespace GTAlpha
                 OnFixedUpdate = FixedUpdateOnAttack
             };
             SetState(attack);
+
+            #endregion
+
+            #region Set Ready To Attack State
+
+            State<int> readyToAttack = new State<int>(ReadyToAttackState)
+            {
+                OnStart = StartOnReadyToAttack, OnEnd = EndOnReadyToAttack, OnUpdate = UpdateOnReadyToAttack,
+                OnFixedUpdate = FixedUpdateOnReadyToAttack
+            };
+            SetState(readyToAttack);
 
             #endregion
         }

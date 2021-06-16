@@ -8,7 +8,7 @@ namespace GTAlpha
     {
         private static bool _isStarted;
         
-        [SerializeField] private GlobalScriptableObject[] scriptableObjects;
+        [SerializeField] private GlobalScriptableObject[] globalScriptableObjects;
 
         private void Awake()
         {
@@ -33,9 +33,9 @@ namespace GTAlpha
             StateManager.Load();
             SettingsManager.Load();
             
-            for (int i = 0; i < scriptableObjects.Length; i++)
+            for (int i = 0; i < globalScriptableObjects.Length; i++)
             {
-                scriptableObjects[i].Load();
+                globalScriptableObjects[i].Load();
             }
             
             Cursor.lockState = CursorLockMode.Locked;

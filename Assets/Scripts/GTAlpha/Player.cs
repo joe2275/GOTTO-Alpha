@@ -48,6 +48,54 @@ namespace GTAlpha
 
         #endregion
 
+        #region Ready To Attack State Events
+
+        protected override void StartOnReadyToAttack()
+        {
+            base.StartOnReadyToAttack();
+        }
+
+        protected override void EndOnReadyToAttack()
+        {
+            base.EndOnReadyToAttack();
+        }
+
+        protected override void UpdateOnReadyToAttack()
+        {
+            base.UpdateOnReadyToAttack();
+        }
+
+        protected override void FixedUpdateOnReadyToAttack()
+        {
+            base.FixedUpdateOnReadyToAttack();
+        }
+
+        #endregion
+
+        #region Attack State Events
+
+        protected override void StartOnAttack()
+        {
+            base.StartOnAttack();
+        }
+
+        protected override void EndOnAttack()
+        {
+            base.EndOnAttack();
+        }
+
+        protected override void UpdateOnAttack()
+        {
+            base.UpdateOnAttack();
+        }
+
+        protected override void FixedUpdateOnAttack()
+        {
+            base.FixedUpdateOnAttack();
+        }
+
+        #endregion
+
         #region Protected Methods
 
         protected override void Awake()
