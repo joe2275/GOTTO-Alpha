@@ -13,7 +13,7 @@ namespace GTAlpha
 
         #endregion
 
-        public static WeaponInfo Get(int index)
+        public static WeaponInfo GetInformation(int index)
         {
             if (index < 0 || index >= Weapon.Keys.Length)
             {
@@ -24,7 +24,7 @@ namespace GTAlpha
             return _main.weaponInfoArray[index];
         }
 
-        public static WeaponInfo Get(string key)
+        public static WeaponInfo GetInformation(string key)
         {
             string[] keys = Weapon.Keys;
             

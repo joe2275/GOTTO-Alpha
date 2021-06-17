@@ -30,7 +30,7 @@ namespace GTAlpha
 
         #endregion
 
-        #region Public Methods
+        #region Public Functions
 
         public int GetConnectionTypeIn(int index)
         {

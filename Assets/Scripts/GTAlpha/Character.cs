@@ -11,7 +11,7 @@ namespace GTAlpha
 
         #endregion
 
-        #region Protected Methods
+        #region Protected Functions
 
         protected override void Awake()
         {

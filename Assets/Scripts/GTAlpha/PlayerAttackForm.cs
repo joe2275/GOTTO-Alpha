@@ -20,7 +20,7 @@ namespace GTAlpha
 
         #endregion
 
-        #region Public Methods
+        #region Public Functions
 
         public PlayerAttackMotion GetSingleTargetMotion(int index)
         {
@@ -35,7 +35,7 @@ namespace GTAlpha
 
         public PlayerAttackMotion GetMultipleTargetMotion(int index)
         {
-            if (index <= 0 || index >= multipleTargetMotionArray.Length)
+            if (index < 0 || index >= multipleTargetMotionArray.Length)
             {
                 Debug.LogErrorFormat("Out of Multiple Target Motion Index - Length : {0}, Index : {1}", multipleTargetMotionArray.Length, index);
                 return null;

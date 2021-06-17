@@ -23,7 +23,7 @@ namespace GTAlpha
 
         #endregion
 
-        #region Public Static Properties
+        #region Properties
 
         public static int Level
         {

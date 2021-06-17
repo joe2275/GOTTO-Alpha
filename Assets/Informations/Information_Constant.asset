@@ -12,17 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f58c9ab782d24e39b3701a61f7950174, type: 3}
   m_Name: Information_Constant
   m_EditorClassIdentifier: 
-  maxExpCoefficient: 100
-  maxExpPower: 1.5
-  vitalityIncrease: 0.04
-  vitalityLimitation: 10000
-  enduranceIncrease: 0.1
-  enduranceLimitation: 2000
-  strengthIncrease: 0.01
-  strengthLimitation: 10000
-  resistanceIncrease: 0.01
-  resistanceLimitation: 10000
-  playerVitality: 10
-  playerEndurance: 10
-  playerStrength: 10
-  playerResistance: 10
+  maxDegreesDelta: 1440
+  moveVelocityDelta: 5

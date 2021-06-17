@@ -25,8 +25,8 @@ namespace GTAlpha
         
         #endregion
 
-        #region Public Methods
-
+        #region Public Functions
+        
         public static PlayerAttackForm GetPlayerAttackForm(int index)
         {
             PlayerAttackForm[] playerAttackFormArray = _main.playerAttackFormArray;

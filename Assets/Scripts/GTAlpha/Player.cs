@@ -1,4 +1,5 @@
-﻿using Camera3D;
+﻿using System;
+using Camera3D;
 using Manager;
 using UnityEngine;
 
@@ -11,6 +12,17 @@ namespace GTAlpha
         private PlayerStatus mStatus;
         private PlayerInput mInput;
         private ThirdPersonCamera mCamera;
+        private PlayerAttackMotion[] mAttackMotions;
+        private int mAttackMotionCount;
+
+        private PlayerAnimationEvent mAnimationEvent;
+        private PlayerTransparentAnimationEvent mTransparentAnimationEvent;
+
+        #endregion
+
+        #region Serialized Fields
+
+        [SerializeField] private Animator transparentAnimator;
 
         #endregion
 
@@ -34,16 +46,20 @@ namespace GTAlpha
 
         protected override void UpdateOnMove()
         {
+            // if (mInput.AttackSingleTargetStarted || mInput.AttackMultipleTargetStarted)
+            // {
+            //     State = ReadyToAttackState;
+            //     return;
+            // }
+            
             base.UpdateOnMove();
-            
-            Vector3 cameraForward = mCamera.Forward;
-            cameraForward = new Vector3(cameraForward.x, 0.0f, cameraForward.z);
 
-            Quaternion myRotation = Rotation;
-            Quaternion cameraRotation = Quaternion.LookRotation(cameraForward);
-            
+            Vector2 moveVelocity = MoveVelocity;
 
-            Rotation = Quaternion.RotateTowards(myRotation, cameraRotation, Constant.MaxDegreesDelta * Time.deltaTime);
+            if (Mathf.Abs(moveVelocity.x) > Mathf.Epsilon || Mathf.Abs(moveVelocity.y) > Mathf.Epsilon)
+            {
+                RotateTowardCamera(Time.deltaTime);
+            }
         }
 
         #endregion
@@ -53,21 +69,37 @@ namespace GTAlpha
         protected override void StartOnReadyToAttack()
         {
             base.StartOnReadyToAttack();
-        }
 
-        protected override void EndOnReadyToAttack()
-        {
-            base.EndOnReadyToAttack();
+            AttackWay attackWay;
+            if (mInput.AttackSingleTargetStarted)
+            {
+                mInput.AttackSingleTargetStarted = false;
+                attackWay = AttackWay.Single;
+            }
+            else
+            {
+                attackWay = AttackWay.Multiple;
+            }
+            
+            PlayerAttackSystem.GetPlayerAttackMotionArray(WeaponRepository.GetInformation(InventoryData.SeekWeaponSlot(0)).WeaponForm, attackWay, 5, mAttackMotions, out mAttackMotionCount);
         }
 
         protected override void UpdateOnReadyToAttack()
         {
             base.UpdateOnReadyToAttack();
-        }
+            
+            RotateTowardCamera(Time.deltaTime);
 
-        protected override void FixedUpdateOnReadyToAttack()
-        {
-            base.FixedUpdateOnReadyToAttack();
+            if (mAnimationEvent.IsEndOfAnimation)
+            {
+                mAnimationEvent.IsEndOfAnimation = false;
+                transparentAnimator.gameObject.SetActive(true);
+            }
+            else if (mTransparentAnimationEvent.IsEndOfTransparentMotions)
+            {
+                mTransparentAnimationEvent.IsEndOfTransparentMotions = false;
+                transparentAnimator.gameObject.SetActive(false);
+            }
         }
 
         #endregion
@@ -96,7 +128,7 @@ namespace GTAlpha
 
         #endregion
 
-        #region Protected Methods
+        #region Protected Functions
 
         protected override void Awake()
         {
@@ -108,7 +140,20 @@ namespace GTAlpha
             Status = new PlayerStatus();
             Input = new PlayerInput(inputMaster);
 
-            mCamera = GetComponentInChildren<ThirdPersonCamera>();
+            mCamera = GetComponentInChildren<ThirdPersonCamera>(true);
+
+            mAttackMotions = new PlayerAttackMotion[10];
+            mAnimationEvent = GetComponentInChildren<PlayerAnimationEvent>(true);
+            mTransparentAnimationEvent = GetComponentInChildren<PlayerTransparentAnimationEvent>(true);
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+            // Equip Test Weapon ...
+            InventoryData.GetWeaponData(0).IsLocked = false;
+            InventoryData.EquipWeapon(0, 0);
         }
 
         protected override void Update()
@@ -121,6 +166,21 @@ namespace GTAlpha
             base.Update();
             
             mCamera.Rotate(mInput.Rotation * SettingsManager.Sensitivity);
+        }
+
+        #endregion
+
+        #region Private Functions
+
+        private void RotateTowardCamera(float deltaTime)
+        {
+            Vector3 cameraForward = mCamera.Forward;
+            cameraForward = new Vector3(cameraForward.x, 0.0f, cameraForward.z);
+
+            Quaternion myRotation = Rotation;
+            Quaternion cameraRotation = Quaternion.LookRotation(cameraForward);
+            
+            Rotation = Quaternion.RotateTowards(myRotation, cameraRotation, Constant.MaxDegreesDelta * deltaTime);
         }
 
         #endregion
