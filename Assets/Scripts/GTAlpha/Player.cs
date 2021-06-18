@@ -37,7 +37,7 @@ namespace GTAlpha
         public new PlayerInput Input
         {
             get => mInput;
-            set => base.Input = mInput = value;
+            protected set => base.Input = mInput = value;
         }
 
         #endregion
@@ -51,8 +51,24 @@ namespace GTAlpha
             //     State = ReadyToAttackState;
             //     return;
             // }
-            
+
             base.UpdateOnMove();
+
+            Vector2 moveVelocity = MoveVelocity;
+
+            if (Mathf.Abs(moveVelocity.x) > Mathf.Epsilon || Mathf.Abs(moveVelocity.y) > Mathf.Epsilon)
+            {
+                RotateTowardCamera(Time.deltaTime);
+            }
+        }
+
+        #endregion
+
+        #region Jump State Events
+
+        protected override void UpdateOnJump()
+        {
+            base.UpdateOnJump();
 
             Vector2 moveVelocity = MoveVelocity;
 
@@ -80,14 +96,16 @@ namespace GTAlpha
             {
                 attackWay = AttackWay.Multiple;
             }
-            
-            PlayerAttackSystem.GetPlayerAttackMotionArray(WeaponRepository.GetInformation(InventoryData.SeekWeaponSlot(0)).WeaponForm, attackWay, 5, mAttackMotions, out mAttackMotionCount);
+
+            PlayerAttackSystem.GetPlayerAttackMotionArray(
+                WeaponRepository.GetInformation(InventoryData.SeekWeaponSlot(0)).WeaponForm, attackWay, 5,
+                mAttackMotions, out mAttackMotionCount);
         }
 
         protected override void UpdateOnReadyToAttack()
         {
             base.UpdateOnReadyToAttack();
-            
+
             RotateTowardCamera(Time.deltaTime);
 
             if (mAnimationEvent.IsEndOfAnimation)
@@ -162,9 +180,9 @@ namespace GTAlpha
             {
                 return;
             }
-            
+
             base.Update();
-            
+
             mCamera.Rotate(mInput.Rotation * SettingsManager.Sensitivity);
         }
 
@@ -179,7 +197,7 @@ namespace GTAlpha
 
             Quaternion myRotation = Rotation;
             Quaternion cameraRotation = Quaternion.LookRotation(cameraForward);
-            
+
             Rotation = Quaternion.RotateTowards(myRotation, cameraRotation, Constant.MaxDegreesDelta * deltaTime);
         }
 

@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDegreesDelta: 1440
   moveVelocityDelta: 5
+  jumpAcceleration: 5
+  groundCriteria: 0.15

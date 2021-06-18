@@ -6,7 +6,7 @@ namespace GTAlpha
 {
     public class Actor : StateBase<int>
     {
-        #region State Constant
+        #region State Constants
 
         public const int MoveState = 0;
         public const int HitState = 1;
@@ -31,7 +31,6 @@ namespace GTAlpha
 
         #region Properties
 
-        public Transform BodyTransform => bodyTransform;
         public Animator AvatarAnimator => avatarAnimator;
         public Vector3 Forward => forwardTransform.position - centerTransform.position;
 
@@ -80,11 +79,11 @@ namespace GTAlpha
         protected virtual void StartOnMove()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, MoveState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
+            
             avatarAnimator.SetFloat(Constant.AnimationFront, 0.0f);
             avatarAnimator.SetFloat(Constant.AnimationRight, 0.0f);
 
-            MoveVelocity = Vector2.zero;
+            // MoveVelocity = Vector2.zero;
         }
 
         protected virtual void EndOnMove()
@@ -97,7 +96,7 @@ namespace GTAlpha
 
         protected virtual void FixedUpdateOnMove()
         {
-            AdjustMoveVelocity(Time.fixedDeltaTime);
+            AdjustMoveVelocity(Constant.MoveVelocityDeltaOnGround * Time.fixedDeltaTime);
 
             Vector3 forward = Forward;
             Vector3 right = Right;
@@ -115,7 +114,6 @@ namespace GTAlpha
         protected virtual void StartOnHit()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, HitState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnHit()
@@ -137,7 +135,6 @@ namespace GTAlpha
         protected virtual void StartOnDie()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, DieState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnDie()
@@ -159,7 +156,6 @@ namespace GTAlpha
         protected virtual void StartOnReadyToAttack()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, ReadyToAttackState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnReadyToAttack()
@@ -184,7 +180,6 @@ namespace GTAlpha
         protected virtual void StartOnAttack()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, AttackState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnAttack()
@@ -285,11 +280,7 @@ namespace GTAlpha
             base.FixedUpdate();
         }
 
-        #endregion
-
-        #region Private Functions
-
-        private void AdjustMoveVelocity(float deltaTime)
+        protected void AdjustMoveVelocity(float maxDelta)
         {
             Vector2 movement = Input.Movement;
             // 이동 입력 정규화
@@ -299,7 +290,7 @@ namespace GTAlpha
                 movement /= magnitude;
             }
 
-            MoveVelocity = Vector2.MoveTowards(MoveVelocity, movement, Constant.MoveVelocityDelta * deltaTime);
+            MoveVelocity = Vector2.MoveTowards(MoveVelocity, movement, maxDelta);
         }
 
         #endregion

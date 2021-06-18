@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 1075116638}
   - component: {fileID: 1075116637}
   - component: {fileID: 1075116636}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,6 +366,34 @@ PrefabInstance:
     - target: {fileID: 3126689889052245603, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5770955488242602366, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5770955488242602366, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5770955488242602366, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5770955488242602366, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5770955488242602366, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5770955488242602366, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9085650511092878343, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8e9f7d62d6c4ca47873498d33d23d75, type: 3}

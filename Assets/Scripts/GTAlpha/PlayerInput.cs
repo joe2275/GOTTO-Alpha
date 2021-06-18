@@ -2,7 +2,7 @@
 
 namespace GTAlpha
 {
-    public class PlayerInput : ActorInput
+    public class PlayerInput : CharacterInput
     {
         #region Fields
 
@@ -16,6 +16,7 @@ namespace GTAlpha
         public Vector2 Rotation => mInputMaster.InGame.Rotate.ReadValue<Vector2>();
         public bool AttackSingleTargetStarted { get; set; }
         public bool AttackMultipleTargetStarted { get; set; }
+        public override bool JumpStarted { get; set; }
 
         #endregion
 
@@ -30,6 +31,11 @@ namespace GTAlpha
             mInputMaster.InGame.AttackMultipleTarget.started += context =>
             {
                 AttackMultipleTargetStarted = true;
+            };
+
+            mInputMaster.InGame.JumpParkour.started += context =>
+            {
+                JumpStarted = true;
             };
         }
     }
