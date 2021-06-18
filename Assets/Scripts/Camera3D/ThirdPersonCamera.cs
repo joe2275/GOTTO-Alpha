@@ -61,7 +61,7 @@ namespace Camera3D
 
         #endregion
 
-        #region Public Methods
+        #region Public Functions
 
         public void Rotate(Vector2 angles)
         {
@@ -82,7 +82,7 @@ namespace Camera3D
 
         #endregion
 
-        #region Private Methods
+        #region Private Functions
 
         private void LateUpdate()
         {

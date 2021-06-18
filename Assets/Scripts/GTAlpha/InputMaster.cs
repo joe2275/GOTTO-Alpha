@@ -23,8 +23,8 @@ namespace GTAlpha
                 {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""4a38062a-9102-4309-bcfb-ceb6fc58179c"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""id"": ""8dd6399e-1f22-4602-8ecc-3ac11fc227c8"",
+                    ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -53,7 +53,7 @@ namespace GTAlpha
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Attack 1"",
+                    ""name"": ""AttackSingleTarget"",
                     ""type"": ""Button"",
                     ""id"": ""a53304d7-0463-4f2d-bf28-62351ed7011b"",
                     ""expectedControlType"": ""Button"",
@@ -61,7 +61,7 @@ namespace GTAlpha
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Attack 2"",
+                    ""name"": ""AttackMultipleTarget"",
                     ""type"": ""Button"",
                     ""id"": ""f6cf4d47-6d41-44a7-8a00-cf5e8c777252"",
                     ""expectedControlType"": ""Button"",
@@ -126,116 +126,6 @@ namespace GTAlpha
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""696160f4-1a86-4bca-b0ba-84c7ba65721d"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""eb64aed9-4481-4edf-9ef9-d923336e58f3"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""42c7fac4-9064-4932-bd57-e52bed7bb5e6"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""5cb9c40a-2164-409e-ad2e-edf6492cb407"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""65be1c88-1712-49e7-84ad-be319ed30822"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Gamepad"",
-                    ""id"": ""2968ac8d-aac0-41a5-9b62-2a39571f6144"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""9ce7b609-caaf-4884-8a2c-442343c76a5f"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""fce02c87-ad43-41f8-87be-e6d0b4ef1c64"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""23431524-f8de-4870-a299-0dfdf8958f05"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""d602d9ca-a660-42bb-bd14-2f79a488b5f2"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Player"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": ""Mouse"",
                     ""id"": ""da2a8593-bb1a-4351-80c1-d98a9f60b54a"",
@@ -397,7 +287,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""Attack 1"",
+                    ""action"": ""AttackSingleTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -408,7 +298,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""Attack 1"",
+                    ""action"": ""AttackSingleTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -419,7 +309,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""Attack 2"",
+                    ""action"": ""AttackMultipleTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -430,7 +320,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""Attack 2"",
+                    ""action"": ""AttackMultipleTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -587,6 +477,116 @@ namespace GTAlpha
                     ""action"": ""Weapon 3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""791cb831-7c08-4d70-815e-6196a5b36e0a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""7027939c-125b-4935-9610-487c47a8fb12"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7f91efaa-e480-458e-9c07-9dbb8ea03b37"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""83f2320f-2863-41ef-a07b-2e5f43701d2e"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""64535900-1ec5-4207-9f35-fa421b08c6fc"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""3c00d0df-0023-43a1-8a8f-08dbc8fa8408"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""2eb3521f-5a74-41c1-b828-083ea33e7e2e"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b95e7ddf-aacb-4623-95e1-41ab8e0b91ae"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""bed70a78-2a40-4af6-baa4-e5c2c1d0e1c7"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""60ed7b93-dd05-4c63-af77-5dc2236debb9"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -621,8 +621,8 @@ namespace GTAlpha
             m_InGame_Rotate = m_InGame.FindAction("Rotate", throwIfNotFound: true);
             m_InGame_Evade = m_InGame.FindAction("Evade", throwIfNotFound: true);
             m_InGame_JumpParkour = m_InGame.FindAction("Jump & Parkour", throwIfNotFound: true);
-            m_InGame_Attack1 = m_InGame.FindAction("Attack 1", throwIfNotFound: true);
-            m_InGame_Attack2 = m_InGame.FindAction("Attack 2", throwIfNotFound: true);
+            m_InGame_AttackSingleTarget = m_InGame.FindAction("AttackSingleTarget", throwIfNotFound: true);
+            m_InGame_AttackMultipleTarget = m_InGame.FindAction("AttackMultipleTarget", throwIfNotFound: true);
             m_InGame_Skill1 = m_InGame.FindAction("Skill 1", throwIfNotFound: true);
             m_InGame_Skill2 = m_InGame.FindAction("Skill 2", throwIfNotFound: true);
             m_InGame_UseItem = m_InGame.FindAction("Use Item", throwIfNotFound: true);
@@ -683,8 +683,8 @@ namespace GTAlpha
         private readonly InputAction m_InGame_Rotate;
         private readonly InputAction m_InGame_Evade;
         private readonly InputAction m_InGame_JumpParkour;
-        private readonly InputAction m_InGame_Attack1;
-        private readonly InputAction m_InGame_Attack2;
+        private readonly InputAction m_InGame_AttackSingleTarget;
+        private readonly InputAction m_InGame_AttackMultipleTarget;
         private readonly InputAction m_InGame_Skill1;
         private readonly InputAction m_InGame_Skill2;
         private readonly InputAction m_InGame_UseItem;
@@ -700,8 +700,8 @@ namespace GTAlpha
             public InputAction @Rotate => m_Wrapper.m_InGame_Rotate;
             public InputAction @Evade => m_Wrapper.m_InGame_Evade;
             public InputAction @JumpParkour => m_Wrapper.m_InGame_JumpParkour;
-            public InputAction @Attack1 => m_Wrapper.m_InGame_Attack1;
-            public InputAction @Attack2 => m_Wrapper.m_InGame_Attack2;
+            public InputAction @AttackSingleTarget => m_Wrapper.m_InGame_AttackSingleTarget;
+            public InputAction @AttackMultipleTarget => m_Wrapper.m_InGame_AttackMultipleTarget;
             public InputAction @Skill1 => m_Wrapper.m_InGame_Skill1;
             public InputAction @Skill2 => m_Wrapper.m_InGame_Skill2;
             public InputAction @UseItem => m_Wrapper.m_InGame_UseItem;
@@ -730,12 +730,12 @@ namespace GTAlpha
                     @JumpParkour.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnJumpParkour;
                     @JumpParkour.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnJumpParkour;
                     @JumpParkour.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnJumpParkour;
-                    @Attack1.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack1;
-                    @Attack1.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack1;
-                    @Attack1.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack1;
-                    @Attack2.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack2;
-                    @Attack2.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack2;
-                    @Attack2.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack2;
+                    @AttackSingleTarget.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackSingleTarget;
+                    @AttackSingleTarget.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackSingleTarget;
+                    @AttackSingleTarget.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackSingleTarget;
+                    @AttackMultipleTarget.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackMultipleTarget;
+                    @AttackMultipleTarget.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackMultipleTarget;
+                    @AttackMultipleTarget.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackMultipleTarget;
                     @Skill1.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill1;
                     @Skill1.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill1;
                     @Skill1.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill1;
@@ -773,12 +773,12 @@ namespace GTAlpha
                     @JumpParkour.started += instance.OnJumpParkour;
                     @JumpParkour.performed += instance.OnJumpParkour;
                     @JumpParkour.canceled += instance.OnJumpParkour;
-                    @Attack1.started += instance.OnAttack1;
-                    @Attack1.performed += instance.OnAttack1;
-                    @Attack1.canceled += instance.OnAttack1;
-                    @Attack2.started += instance.OnAttack2;
-                    @Attack2.performed += instance.OnAttack2;
-                    @Attack2.canceled += instance.OnAttack2;
+                    @AttackSingleTarget.started += instance.OnAttackSingleTarget;
+                    @AttackSingleTarget.performed += instance.OnAttackSingleTarget;
+                    @AttackSingleTarget.canceled += instance.OnAttackSingleTarget;
+                    @AttackMultipleTarget.started += instance.OnAttackMultipleTarget;
+                    @AttackMultipleTarget.performed += instance.OnAttackMultipleTarget;
+                    @AttackMultipleTarget.canceled += instance.OnAttackMultipleTarget;
                     @Skill1.started += instance.OnSkill1;
                     @Skill1.performed += instance.OnSkill1;
                     @Skill1.canceled += instance.OnSkill1;
@@ -819,8 +819,8 @@ namespace GTAlpha
             void OnRotate(InputAction.CallbackContext context);
             void OnEvade(InputAction.CallbackContext context);
             void OnJumpParkour(InputAction.CallbackContext context);
-            void OnAttack1(InputAction.CallbackContext context);
-            void OnAttack2(InputAction.CallbackContext context);
+            void OnAttackSingleTarget(InputAction.CallbackContext context);
+            void OnAttackMultipleTarget(InputAction.CallbackContext context);
             void OnSkill1(InputAction.CallbackContext context);
             void OnSkill2(InputAction.CallbackContext context);
             void OnUseItem(InputAction.CallbackContext context);

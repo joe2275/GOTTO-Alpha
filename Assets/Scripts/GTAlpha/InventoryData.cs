@@ -47,7 +47,7 @@ namespace GTAlpha
 
         #endregion
 
-        #region Weapon Methods
+        #region Weapon Functions
 
         public static WeaponData GetWeaponData(string key)
         {
@@ -183,7 +183,7 @@ namespace GTAlpha
 
         #endregion
 
-        #region Consumption Methods
+        #region Consumption Functions
 
         public static int GetConsumptionCount(string key)
         {
@@ -354,13 +354,13 @@ namespace GTAlpha
 
         #endregion
 
-        #region Accessory Methods
+        #region Accessory Functions
 
         
 
         #endregion
 
-        #region Private Methods
+        #region Private Functions
 
         /*
          * 저장되는 Inventory 관련 정보들을 로드하는 기능

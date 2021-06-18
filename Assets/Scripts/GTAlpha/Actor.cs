@@ -6,17 +6,17 @@ namespace GTAlpha
 {
     public class Actor : StateBase<int>
     {
-        #region State Constant
+        #region State Constants
 
-        public const int IdleState = 0;
-        public const int MoveState = 1;
-        public const int HitState = 2;
-        public const int DieState = 3;
+        public const int MoveState = 0;
+        public const int HitState = 1;
+        public const int DieState = 2;
+        public const int ReadyToAttackState = 3;
         public const int AttackState = 4;
 
         #endregion
 
-        #region SerializedFields
+        #region Serialized Fields
 
         [SerializeField] private Transform bodyTransform;
         [SerializeField] private Animator avatarAnimator;
@@ -31,7 +31,6 @@ namespace GTAlpha
 
         #region Properties
 
-        public Transform BodyTransform => bodyTransform;
         public Animator AvatarAnimator => avatarAnimator;
         public Vector3 Forward => forwardTransform.position - centerTransform.position;
 
@@ -52,10 +51,11 @@ namespace GTAlpha
 
         public Status Status { get; protected set; }
         public ActorInput Input { get; protected set; }
+        public Vector2 MoveVelocity { get; private set; }
 
         #endregion
 
-        #region Public Methods
+        #region Public Functions
 
         public void Move(Vector3 movement, Space space = Space.Self)
         {
@@ -74,41 +74,16 @@ namespace GTAlpha
 
         #endregion
 
-        #region Idle State Events
-
-        protected virtual void StartOnIdle()
-        {
-            avatarAnimator.SetInteger(Constant.AnimationState, IdleState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
-        }
-
-        protected virtual void EndOnIdle()
-        {
-        }
-
-        protected virtual void UpdateOnIdle()
-        {
-            Vector2 movement = Input.Movement;
-            if (Mathf.Abs(movement.x) > Mathf.Epsilon || Mathf.Abs(movement.y) > Mathf.Epsilon)
-            {
-                State = MoveState;
-            }
-        }
-
-        protected virtual void FixedUpdateOnIdle()
-        {
-        }
-
-        #endregion
-
         #region Move State Events
 
         protected virtual void StartOnMove()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, MoveState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
+            
             avatarAnimator.SetFloat(Constant.AnimationFront, 0.0f);
             avatarAnimator.SetFloat(Constant.AnimationRight, 0.0f);
+
+            // MoveVelocity = Vector2.zero;
         }
 
         protected virtual void EndOnMove()
@@ -117,31 +92,19 @@ namespace GTAlpha
 
         protected virtual void UpdateOnMove()
         {
-            Vector2 movement = Input.Movement;
-
-            if (Mathf.Abs(movement.x) < Mathf.Epsilon && Mathf.Abs(movement.y) < Mathf.Epsilon)
-            {
-                State = IdleState;
-            }
-
-            avatarAnimator.SetFloat(Constant.AnimationFront, movement.y);
-            avatarAnimator.SetFloat(Constant.AnimationRight, movement.x);
         }
 
         protected virtual void FixedUpdateOnMove()
         {
-            Vector2 movement = Input.Movement;
-            // 이동 입력 정규화
-            float magnitude = movement.magnitude;
-            if (magnitude > 1.0f + Mathf.Epsilon)
-            {
-                movement /= magnitude;
-            }
+            AdjustMoveVelocity(Constant.MoveVelocityDeltaOnGround * Time.fixedDeltaTime);
 
             Vector3 forward = Forward;
             Vector3 right = Right;
 
-            Move((forward * movement.y + right * movement.x) * (Status.MoveSpeed * Time.fixedDeltaTime), Space.World);
+            Move((forward * MoveVelocity.y + right * MoveVelocity.x) * (Status.MoveSpeed * Time.fixedDeltaTime), Space.World);
+            
+            avatarAnimator.SetFloat(Constant.AnimationFront, MoveVelocity.y);
+            avatarAnimator.SetFloat(Constant.AnimationRight, MoveVelocity.x);
         }
 
         #endregion
@@ -151,7 +114,6 @@ namespace GTAlpha
         protected virtual void StartOnHit()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, HitState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnHit()
@@ -173,7 +135,6 @@ namespace GTAlpha
         protected virtual void StartOnDie()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, DieState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnDie()
@@ -190,12 +151,35 @@ namespace GTAlpha
 
         #endregion
 
+        #region Ready To Attack State Events
+
+        protected virtual void StartOnReadyToAttack()
+        {
+            avatarAnimator.SetInteger(Constant.AnimationState, ReadyToAttackState);
+        }
+
+        protected virtual void EndOnReadyToAttack()
+        {
+            
+        }
+
+        protected virtual void UpdateOnReadyToAttack()
+        {
+            
+        }
+
+        protected virtual void FixedUpdateOnReadyToAttack()
+        {
+            
+        }
+
+        #endregion
+
         #region Attack State Events
 
         protected virtual void StartOnAttack()
         {
             avatarAnimator.SetInteger(Constant.AnimationState, AttackState);
-            avatarAnimator.SetTrigger(Constant.AnimationChanged);
         }
 
         protected virtual void EndOnAttack()
@@ -212,21 +196,11 @@ namespace GTAlpha
 
         #endregion
 
-        #region Protected Methods
+        #region Protected Functions
 
         protected override void Awake()
         {
             base.Awake();
-
-            #region Set Idle State
-
-            State<int> idle = new State<int>(IdleState)
-            {
-                OnStart = StartOnIdle, OnEnd = EndOnIdle, OnUpdate = UpdateOnIdle, OnFixedUpdate = FixedUpdateOnIdle
-            };
-            SetState(idle);
-
-            #endregion
 
             #region Set Move State
 
@@ -268,11 +242,22 @@ namespace GTAlpha
             SetState(attack);
 
             #endregion
+
+            #region Set Ready To Attack State
+
+            State<int> readyToAttack = new State<int>(ReadyToAttackState)
+            {
+                OnStart = StartOnReadyToAttack, OnEnd = EndOnReadyToAttack, OnUpdate = UpdateOnReadyToAttack,
+                OnFixedUpdate = FixedUpdateOnReadyToAttack
+            };
+            SetState(readyToAttack);
+
+            #endregion
         }
 
         protected virtual void Start()
         {
-            State = IdleState;
+            State = MoveState;
         }
 
         protected override void Update()
@@ -293,6 +278,19 @@ namespace GTAlpha
             }
 
             base.FixedUpdate();
+        }
+
+        protected void AdjustMoveVelocity(float maxDelta)
+        {
+            Vector2 movement = Input.Movement;
+            // 이동 입력 정규화
+            float magnitude = movement.magnitude;
+            if (magnitude > 1.0f + Mathf.Epsilon)
+            {
+                movement /= magnitude;
+            }
+
+            MoveVelocity = Vector2.MoveTowards(MoveVelocity, movement, maxDelta);
         }
 
         #endregion
