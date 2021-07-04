@@ -24,7 +24,7 @@ namespace GTAlpha
         [SerializeField] private int penetrationPower = 10;
         [SerializeField] private int blowPower = 40;
 
-        [SerializeField] private WeaponForm weaponForm = WeaponForm.TestingForm;
+        [SerializeField] private string weaponForm = "";
         
 
         #endregion
@@ -45,7 +45,7 @@ namespace GTAlpha
         public int PenetrationPower => penetrationPower;
         public int BlowPower => blowPower;
 
-        public WeaponForm WeaponForm => weaponForm;
+        public string WeaponForm => weaponForm;
 
 
         #endregion

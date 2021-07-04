@@ -2,7 +2,7 @@
 
 namespace GTAlpha
 {
-    public class PlayerInput : CharacterInput
+    public class PlayerInput
     {
         #region Fields
 
@@ -12,30 +12,41 @@ namespace GTAlpha
 
         #region Properties
 
-        public override Vector2 Movement => mInputMaster.InGame.Move.ReadValue<Vector2>();
+        public Vector2 Movement => mInputMaster.InGame.Move.ReadValue<Vector2>();
+
+        public Vector2 NormalizedMovement
+        {
+            get
+            {
+                Vector2 movement = Movement;
+                // 이동 입력 정규화
+                float magnitude = movement.magnitude;
+                if (magnitude > 1.0f + Mathf.Epsilon)
+                {
+                    movement /= magnitude;
+                }
+
+                return movement;
+            }
+        }
         public Vector2 Rotation => mInputMaster.InGame.Rotate.ReadValue<Vector2>();
-        public bool AttackSingleTargetStarted { get; set; }
-        public bool AttackMultipleTargetStarted { get; set; }
-        public override bool JumpStarted { get; set; }
+        
+        public bool AttackStarted { get; set; }
+        
+        public bool LockOnStarted { get; set; }
 
         #endregion
 
         public PlayerInput(InputMaster inputMaster)
         {
             mInputMaster = inputMaster;
-            mInputMaster.InGame.AttackSingleTarget.started += context =>
+            mInputMaster.InGame.Attack.started += context =>
             {
-                AttackSingleTargetStarted = true;
+                AttackStarted = true;
             };
-
-            mInputMaster.InGame.AttackMultipleTarget.started += context =>
+            mInputMaster.InGame.LockOn.started += context =>
             {
-                AttackMultipleTargetStarted = true;
-            };
-
-            mInputMaster.InGame.JumpParkour.started += context =>
-            {
-                JumpStarted = true;
+                LockOnStarted = true;
             };
         }
     }

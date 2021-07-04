@@ -26,20 +26,9 @@ namespace GTAlpha
 
         public static WeaponInfo GetInformation(string key)
         {
-            string[] keys = Weapon.Keys;
-            
-            for (int i = 0; i < keys.Length; i++)
-            {
-                if (keys[i].Equals(key))
-                {
-                    return _main.weaponInfoArray[i];
-                }
-            }
-
-            Debug.LogErrorFormat("Not Exist Weapon Key - Key : {0}", key);
-            return null;
+            return GetInformation(Weapon.GetWeaponKeyIndex(key));
         }
-        
+
         public override void Load()
         {
             _main = this;

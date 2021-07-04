@@ -8,42 +8,28 @@ namespace GTAlpha
     {
         #region Serialized Fields
 
-        [SerializeField] private PlayerAttackMotion[] singleTargetMotionArray;
-        [SerializeField] private PlayerAttackMotion[] multipleTargetMotionArray;
+        [SerializeField] private PlayerAttackMotion[] attackMotionArray;
 
         #endregion
 
         #region Properties
         
-        public int CountOfSingleTargetMotions => singleTargetMotionArray.Length;
-        public int CountOfMultipleTargetMotions => multipleTargetMotionArray.Length;
+        public int CountOfAttackMotions => attackMotionArray.Length;
 
         #endregion
 
         #region Public Functions
 
-        public PlayerAttackMotion GetSingleTargetMotion(int index)
+        public PlayerAttackMotion GetAttackMotion(int index)
         {
-            if (index < 0 || index >= singleTargetMotionArray.Length)
+            if (index < 0 || index >= attackMotionArray.Length)
             {
-                Debug.LogErrorFormat("Out of Single Target Motion Index - Length : {0}, Index : {1}", singleTargetMotionArray.Length, index);
+                Debug.LogErrorFormat("Out of Attack Motion Index - Length : {0}, Index : {1}", attackMotionArray.Length, index);
                 return null;
             }
 
-            return singleTargetMotionArray[index];
+            return attackMotionArray[index];
         }
-
-        public PlayerAttackMotion GetMultipleTargetMotion(int index)
-        {
-            if (index < 0 || index >= multipleTargetMotionArray.Length)
-            {
-                Debug.LogErrorFormat("Out of Multiple Target Motion Index - Length : {0}, Index : {1}", multipleTargetMotionArray.Length, index);
-                return null;
-            }
-
-            return multipleTargetMotionArray[index];
-        }
-        
 
         #endregion
     }

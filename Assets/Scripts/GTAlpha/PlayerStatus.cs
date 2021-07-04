@@ -1,6 +1,6 @@
 ﻿namespace GTAlpha
 {
-    public class PlayerStatus : Status
+    public class PlayerStatus : CharacterStatus
     {
         #region Private Static Methods
 
@@ -19,6 +19,8 @@
         #endregion
 
         #region Public Properties
+
+        public override int Level => PlayerData.Level;
 
         public override int MaxHealthPoint
         {
@@ -39,7 +41,7 @@
         public override int DefensivePower => ConvertSecondToFirst(PlayerData.Resistance, PlayerInfo.ResistanceIncrease,
             PlayerInfo.ResistanceLimitation);
 
-        public override float MoveSpeed { get; } = 5.0f;
+        public override float MoveSpeed { get; } = 3.0f;
 
         public Element ElementalType { get; }
 

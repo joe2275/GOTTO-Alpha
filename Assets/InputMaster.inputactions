@@ -38,7 +38,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "AttackSingleTarget",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "a53304d7-0463-4f2d-bf28-62351ed7011b",
                     "expectedControlType": "Button",
@@ -46,7 +46,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "AttackMultipleTarget",
+                    "name": "Defense",
                     "type": "Button",
                     "id": "f6cf4d47-6d41-44a7-8a00-cf5e8c777252",
                     "expectedControlType": "Button",
@@ -105,6 +105,14 @@
                     "name": "Weapon 3",
                     "type": "Button",
                     "id": "fd9a0dee-84d4-4e0a-b420-d262d9186829",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LockOn",
+                    "type": "Button",
+                    "id": "19643e81-bfac-4465-b7f7-06a37cdeca8e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -272,7 +280,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Player",
-                    "action": "AttackSingleTarget",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -283,7 +291,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Player",
-                    "action": "AttackSingleTarget",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -294,7 +302,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Player",
-                    "action": "AttackMultipleTarget",
+                    "action": "Defense",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -305,7 +313,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Player",
-                    "action": "AttackMultipleTarget",
+                    "action": "Defense",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -572,6 +580,28 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "cc0b6f7e-716b-490e-b1b0-e41f0be44a45",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Player",
+                    "action": "LockOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "34e5f728-6982-4ff4-9adf-f0468c62aabf",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Player",
+                    "action": "LockOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -8,15 +8,14 @@ namespace GTAlpha
     {
         #region Serialized Fields
 
-        [SerializeField] private PlayerAttackForm[] playerAttackFormArray = new PlayerAttackForm[(int)WeaponForm.Count];
+        [SerializeField] private PlayerAttackForm[] playerAttackFormArray = new PlayerAttackForm[Weapon.Forms.Length];
 
         #endregion
 
         #region Fields
         
         private static PlayerAttackSystem _main;
-        private static Dictionary<int, List<PlayerAttackMotion>>[] _singleTargetConnectionInDictArray;
-        private static Dictionary<int, List<PlayerAttackMotion>>[] _multipleTargetConnectionInDictArray;
+        private static Dictionary<int, List<PlayerAttackMotion>>[] _attackMotionConnectionInDictArray;
 
         #endregion
 
@@ -39,76 +38,39 @@ namespace GTAlpha
             return playerAttackFormArray[index];
         }
 
-        public static void GetPlayerAttackMotionArray(WeaponForm form, AttackWay attackWay, int motionCount, PlayerAttackMotion[] result, out int resultCount)
+        public static void GetPlayerAttackMotionArray(int weaponFormIndex, int motionCount, PlayerAttackMotion[] result, out int resultCount)
         {
-            PlayerAttackForm attackForm = GetPlayerAttackForm((int) form);
+            PlayerAttackForm attackForm = GetPlayerAttackForm(weaponFormIndex);
 
-            if (attackWay == AttackWay.Single)
+            var attackMotionConnectionInDict = _attackMotionConnectionInDictArray[weaponFormIndex];
+            int max = attackForm.CountOfAttackMotions;
+            PlayerAttackMotion motion = attackForm.GetAttackMotion(Random.Range(0, max));
+            result[0] = motion;
+
+            for (int i = 1; i < motionCount; i++)
             {
-                var singleTargetConnectionInDict = _singleTargetConnectionInDictArray[(int) form];
-                int max = attackForm.CountOfSingleTargetMotions;
-                PlayerAttackMotion motion = attackForm.GetSingleTargetMotion(Random.Range(0, max));
-                result[0] = motion;
+                int index = Random.Range(0, motion.CountOfConnectionKeysOut);
 
-                for (int i = 1; i < motionCount; i++)
+                bool isExist = false;
+
+                for (int j = 0; j < motion.CountOfConnectionKeysOut; j++)
                 {
-                    int index = Random.Range(0, motion.CountOfConnectionKeysOut);
+                    int connection = motion.GetConnectionTypeOut((index + j) % motion.CountOfConnectionKeysOut);
 
-                    bool isExist = false;
-
-                    for (int j = 0; j < motion.CountOfConnectionKeysOut; j++)
+                    if (attackMotionConnectionInDict.ContainsKey(connection))
                     {
-                        int connection = motion.GetConnectionTypeOut((index + j) % motion.CountOfConnectionKeysOut);
-
-                        if (singleTargetConnectionInDict.ContainsKey(connection))
-                        {
-                            var connectionInList = singleTargetConnectionInDict[connection];
-                            result[i] = singleTargetConnectionInDict[connection][
-                                Random.Range(0, connectionInList.Count)];
-                            isExist = true;
-                            break;
-                        }
-                    }
-
-                    if (!isExist)
-                    {
-                        resultCount = i;
-                        return;
+                        var connectionInList = attackMotionConnectionInDict[connection];
+                        result[i] = attackMotionConnectionInDict[connection][Random.Range(0, connectionInList.Count)];
+                        motion = result[i];
+                        isExist = true;
+                        break;
                     }
                 }
-            }
-            else
-            {
-                var multipleTargetConnectionInDict = _multipleTargetConnectionInDictArray[(int) form];
-                int max = attackForm.CountOfMultipleTargetMotions;
-                PlayerAttackMotion motion = attackForm.GetMultipleTargetMotion(Random.Range(0, max));
-                result[0] = motion;
 
-                for (int i = 1; i < motionCount; i++)
+                if (!isExist)
                 {
-                    int index = Random.Range(0, motion.CountOfConnectionKeysOut);
-
-                    bool isExist = false;
-
-                    for (int j = 0; j < motion.CountOfConnectionKeysOut; j++)
-                    {
-                        int connection = motion.GetConnectionTypeOut((index + j) % motion.CountOfConnectionKeysOut);
-
-                        if (multipleTargetConnectionInDict.ContainsKey(connection))
-                        {
-                            var connectionInList = multipleTargetConnectionInDict[connection];
-                            result[i] = multipleTargetConnectionInDict[connection][
-                                Random.Range(0, connectionInList.Count)];
-                            isExist = true;
-                            break;
-                        }
-                    }
-
-                    if (!isExist)
-                    {
-                        resultCount = i;
-                        return;
-                    }
+                    resultCount = i;
+                    return;
                 }
             }
             
@@ -119,37 +81,28 @@ namespace GTAlpha
         {
             _main = this;
 
-            _singleTargetConnectionInDictArray = new Dictionary<int, List<PlayerAttackMotion>>[_main.playerAttackFormArray.Length];
-            _multipleTargetConnectionInDictArray =
+            _attackMotionConnectionInDictArray =
                 new Dictionary<int, List<PlayerAttackMotion>>[_main.playerAttackFormArray.Length];
+
+            for (int i = 0; i < _attackMotionConnectionInDictArray.Length; i++)
+            {
+                _attackMotionConnectionInDictArray[i] = new Dictionary<int, List<PlayerAttackMotion>>();
+            }
 
             for (int i = 0; i < _main.playerAttackFormArray.Length; i++)
             {
                 PlayerAttackForm form = _main.playerAttackFormArray[i];
 
-                for (int j = 0; j < form.CountOfSingleTargetMotions; j++)
+                for (int j = 0; j < form.CountOfAttackMotions; j++)
                 {
-                    PlayerAttackMotion motion = form.GetSingleTargetMotion(j);
+                    PlayerAttackMotion motion = form.GetAttackMotion(j);
                     for (int k = 0; k < motion.CountOfConnectionKeysIn; k++)
                     {
-                        if (!_singleTargetConnectionInDictArray[i].ContainsKey(motion.GetConnectionTypeIn(k)))
+                        if (!_attackMotionConnectionInDictArray[i].ContainsKey(motion.GetConnectionTypeIn(k)))
                         {
-                            _singleTargetConnectionInDictArray[i].Add(k, new List<PlayerAttackMotion>());
+                            _attackMotionConnectionInDictArray[i].Add(motion.GetConnectionTypeIn(k), new List<PlayerAttackMotion>());
                         }
-                        _singleTargetConnectionInDictArray[i][k].Add(motion);
-                    }
-                }
-
-                for (int j = 0; j < form.CountOfMultipleTargetMotions; j++)
-                {
-                    PlayerAttackMotion motion = form.GetMultipleTargetMotion(j);
-                    for (int k = 0; k < motion.CountOfConnectionKeysIn; k++)
-                    {
-                        if (!_multipleTargetConnectionInDictArray[i].ContainsKey(motion.GetConnectionTypeIn(k)))
-                        {
-                            _multipleTargetConnectionInDictArray[i].Add(k, new List<PlayerAttackMotion>());
-                        }
-                        _multipleTargetConnectionInDictArray[i][k].Add(motion);
+                        _attackMotionConnectionInDictArray[i][motion.GetConnectionTypeIn(k)].Add(motion);
                     }
                 }
             }

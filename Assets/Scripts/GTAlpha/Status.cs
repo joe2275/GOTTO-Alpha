@@ -13,6 +13,8 @@ namespace GTAlpha
         
         #region Public Properties
 
+        public abstract int Level { get; }
+
         public abstract int MaxHealthPoint { get; }
 
         public int HealthPoint
@@ -31,7 +33,6 @@ namespace GTAlpha
 
         public abstract int OffensivePower { get; }
         public abstract int DefensivePower { get; }
-        public abstract float MoveSpeed { get; }
 
         #endregion
     }

@@ -13,20 +13,4 @@ MonoBehaviour:
   m_Name: System_PlayerAttack
   m_EditorClassIdentifier: 
   playerAttackFormArray:
-  - singleTargetMotionArray:
-    - key: 0
-      connectionKeyArrayIn: 
-      connectionKeyArrayOut: 
-      fullTime: 0
-      attackTime: 0
-    - key: 1
-      connectionKeyArrayIn: 
-      connectionKeyArrayOut: 
-      fullTime: 0
-      attackTime: 0
-    multipleTargetMotionArray:
-    - key: 0
-      connectionKeyArrayIn: 
-      connectionKeyArrayOut: 
-      fullTime: 0
-      attackTime: 0
+  - attackMotionArray: []

@@ -13,8 +13,7 @@ namespace GTAlpha
         [SerializeField] private int[] connectionKeyArrayIn;
         [SerializeField] private int[] connectionKeyArrayOut;
 
-        [SerializeField] private float fullTime;
-        [SerializeField] private float attackTime;
+        [SerializeField] private float nextAttackTime;
 
         #endregion
 
@@ -24,9 +23,7 @@ namespace GTAlpha
 
         public int CountOfConnectionKeysIn => connectionKeyArrayIn.Length;
         public int CountOfConnectionKeysOut => connectionKeyArrayOut.Length;
-
-        public float FullTime => fullTime;
-        public float AttackTime => attackTime;
+        public float NextAttackTime => nextAttackTime;
 
         #endregion
 
