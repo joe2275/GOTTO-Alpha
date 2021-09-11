@@ -16,7 +16,7 @@ namespace GTAlpha.Editor
                 SerializedProperty attackMotionArrayProp =
                     playerAttackFormProp.FindPropertyRelative("attackMotionArray");
 
-                EditorGUILayout.LabelField($"{i+1}. {Weapon.Forms[i]}");
+                EditorGUILayout.LabelField($"{i + 1}. {Weapon.Forms[i]}");
 
                 int attackMotionRemoveIndex = -1;
                 for (int j = 0; j < attackMotionArrayProp.arraySize; j++)
@@ -28,12 +28,33 @@ namespace GTAlpha.Editor
                         attackMotionProp.FindPropertyRelative("connectionKeyArrayIn");
                     SerializedProperty connectionKeyArrayOutProp =
                         attackMotionProp.FindPropertyRelative("connectionKeyArrayOut");
+                    SerializedProperty isNextAttackTimeFixedProp = attackMotionProp.FindPropertyRelative(
+                        "isNextAttackTimeFixed");
                     SerializedProperty nextAttackTimeProp = attackMotionProp.FindPropertyRelative("nextAttackTime");
+                    SerializedProperty minNextAttackTimeProp =
+                        attackMotionProp.FindPropertyRelative("minNextAttackTime");
+                    SerializedProperty maxNextAttackTimeProp =
+                        attackMotionProp.FindPropertyRelative("maxNextAttackTime");
 
+                    isNextAttackTimeFixedProp.boolValue = EditorGUILayout.Toggle("Fixed Next Attack Time",
+                        isNextAttackTimeFixedProp.boolValue);
+                    
                     EditorGUILayout.BeginHorizontal();
                     keyProp.intValue = Mathf.Max(EditorGUILayout.IntField("Key", keyProp.intValue), 0);
-                    nextAttackTimeProp.floatValue =
-                        Mathf.Max(EditorGUILayout.FloatField("Next Attack Time", nextAttackTimeProp.floatValue), 0.0f);
+                    if (isNextAttackTimeFixedProp.boolValue)
+                    {
+                        nextAttackTimeProp.floatValue =
+                            Mathf.Max(EditorGUILayout.FloatField("Next Time", nextAttackTimeProp.floatValue), 0.0f);
+                    }
+                    else
+                    {
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        minNextAttackTimeProp.floatValue =
+                            Mathf.Max(EditorGUILayout.FloatField("Min Time", minNextAttackTimeProp.floatValue), 0.0f);
+                        maxNextAttackTimeProp.floatValue = Mathf.Max(EditorGUILayout.FloatField("Max Time",
+                            maxNextAttackTimeProp.floatValue), minNextAttackTimeProp.floatValue);
+                    }
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.BeginHorizontal();
@@ -52,6 +73,7 @@ namespace GTAlpha.Editor
                         {
                             removeIndex = k;
                         }
+
                         EditorGUILayout.EndHorizontal();
                     }
 
@@ -60,16 +82,17 @@ namespace GTAlpha.Editor
                         connectionKeyArrayInProp.DeleteArrayElementAtIndex(removeIndex);
                         removeIndex = -1;
                     }
-                    
+
                     if (GUILayout.Button("Add Connection In Key"))
                     {
                         connectionKeyArrayInProp.InsertArrayElementAtIndex(connectionKeyArrayInProp.arraySize);
                     }
+
                     EditorGUILayout.EndVertical();
 
                     EditorGUILayout.BeginVertical();
                     EditorGUILayout.LabelField("Connection Out Keys");
-                    
+
                     for (int k = 0; k < connectionKeyArrayOutProp.arraySize; k++)
                     {
                         SerializedProperty connectionKeyOutProp = connectionKeyArrayOutProp.GetArrayElementAtIndex(k);
@@ -81,6 +104,7 @@ namespace GTAlpha.Editor
                         {
                             removeIndex = k;
                         }
+
                         EditorGUILayout.EndHorizontal();
                     }
 
@@ -88,16 +112,17 @@ namespace GTAlpha.Editor
                     {
                         connectionKeyArrayOutProp.DeleteArrayElementAtIndex(removeIndex);
                     }
-                    
+
                     if (GUILayout.Button("Add Connection Out Key"))
                     {
                         connectionKeyArrayOutProp.InsertArrayElementAtIndex(connectionKeyArrayOutProp.arraySize);
                     }
+
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.Space();
-                    
+
                     if (GUILayout.Button("Remove Attack Motion"))
                     {
                         attackMotionRemoveIndex = j;
@@ -109,7 +134,7 @@ namespace GTAlpha.Editor
                     attackMotionArrayProp.DeleteArrayElementAtIndex(attackMotionRemoveIndex);
                     attackMotionRemoveIndex = -1;
                 }
-                
+
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
 

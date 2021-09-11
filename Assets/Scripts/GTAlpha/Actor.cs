@@ -1,25 +1,17 @@
-using Manager;
+﻿using Manager;
 using StateBase;
-using TriggerHandling;
 using UnityEngine;
 
 namespace GTAlpha
 {
+    /// <summary>
+    /// 게임에서 어떠한 방식으로든 움직이거나 상호작용 할 수 있는 모든 객체들이 상속하는 Actor 클래스
+    /// </summary>
+    [RequireComponent(typeof(Animator))]
     public class Actor : StateBase<int>
     {
-        #region State Constants
-
-        public const int NormalState = 0;
-        public const int HitState = 1;
-        public const int DieState = 2;
-        public const int AttackState = 3;
-
-        #endregion
-
         #region Serialized Fields
-
-        [SerializeField] private Transform bodyTransform;
-        [SerializeField] private Animator avatarAnimator;
+        
         [SerializeField] private Transform centerTransform;
         [SerializeField] private Transform forwardTransform;
         [SerializeField] private Transform rightTransform;
@@ -31,16 +23,26 @@ namespace GTAlpha
         #endregion
 
         #region Properties
-
-        public Animator AvatarAnimator => avatarAnimator;
-
-        public Transform BodyTransform => bodyTransform;
+        
+        /// <summary>
+        /// Actor의 최상위 GameObject가 가지는 Animator
+        /// </summary>
+        public Animator Animator { get; private set; }
+        /// <summary>
+        /// Actor의 중심이 되는 위치
+        /// </summary>
         public Transform CenterTransform => centerTransform;
-
+        /// <summary>
+        /// Actor의 앞을 가리키는 정규화된 위치
+        /// </summary>
         public Vector3 Forward => forwardTransform.position - centerTransform.position;
-
+        /// <summary>
+        /// Actor의 오른쪽을 가리키는 정규화된 위치
+        /// </summary>
         public Vector3 Right => rightTransform.position - centerTransform.position;
-
+        /// <summary>
+        /// Actor가 사용하는 게임적 수치를 관리하는 Status
+        /// </summary>
         public Status Status { get; protected set; }
 
         #endregion
@@ -49,7 +51,7 @@ namespace GTAlpha
 
         protected virtual void StartOnNormal()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, NormalState);
+            Animator.SetInteger(Constant.AnimationState, Constant.NormalState);
         }
 
         protected virtual void EndOnNormal()
@@ -70,7 +72,7 @@ namespace GTAlpha
 
         protected virtual void StartOnHit()
         {
-            AvatarAnimator.SetInteger(Constant.AnimationState, HitState);
+            Animator.SetInteger(Constant.AnimationState, Constant.HitState);
         }
 
         protected virtual void EndOnHit()
@@ -91,7 +93,7 @@ namespace GTAlpha
 
         protected virtual void StartOnDie()
         {
-            AvatarAnimator.SetInteger(Constant.AnimationState, DieState);
+            Animator.SetInteger(Constant.AnimationState, Constant.DieState);
         }
 
         protected virtual void EndOnDie()
@@ -112,7 +114,7 @@ namespace GTAlpha
 
         protected virtual void StartOnAttack()
         {
-            AvatarAnimator.SetInteger(Constant.AnimationState, AttackState);
+            Animator.SetInteger(Constant.AnimationState, Constant.AttackState);
         }
 
         protected virtual void EndOnAttack()
@@ -134,10 +136,12 @@ namespace GTAlpha
         protected override void Awake()
         {
             base.Awake();
+            
+            Animator = GetComponent<Animator>();
 
             #region Set Normal State
 
-            State<int> normal = new State<int>(NormalState)
+            State<int> normal = new State<int>(Constant.NormalState)
             {
                 OnStart = StartOnNormal, OnEnd = EndOnNormal, OnUpdate = UpdateOnNormal,
                 OnFixedUpdate = FixedUpdateOnNormal
@@ -148,7 +152,7 @@ namespace GTAlpha
 
             #region Set Hit State
 
-            State<int> hit = new State<int>(HitState)
+            State<int> hit = new State<int>(Constant.HitState)
             {
                 OnStart = StartOnHit, OnEnd = EndOnHit, OnUpdate = UpdateOnHit, OnFixedUpdate = FixedUpdateOnHit
             };
@@ -158,7 +162,7 @@ namespace GTAlpha
 
             #region Set Die State
 
-            State<int> die = new State<int>(DieState)
+            State<int> die = new State<int>(Constant.DieState)
             {
                 OnStart = StartOnDie, OnEnd = EndOnDie, OnUpdate = UpdateOnDie, OnFixedUpdate = FixedUpdateOnDie
             };
@@ -168,7 +172,7 @@ namespace GTAlpha
 
             #region Set Attack State
 
-            State<int> attack = new State<int>(AttackState)
+            State<int> attack = new State<int>(Constant.AttackState)
             {
                 OnStart = StartOnAttack, OnEnd = EndOnAttack, OnUpdate = UpdateOnAttack,
                 OnFixedUpdate = FixedUpdateOnAttack
@@ -180,7 +184,7 @@ namespace GTAlpha
 
         protected virtual void Start()
         {
-            State = NormalState;
+            State = Constant.NormalState;
         }
 
         protected override void Update()

@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace GTAlpha
 {
+    /// <summary>
+    /// 플레이어의 저장되고 지속적으로 변하는 정보를 가지는 클래스
+    /// </summary>
     [Serializable]
     public class PlayerData
     {

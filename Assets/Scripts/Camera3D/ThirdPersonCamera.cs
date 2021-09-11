@@ -6,6 +6,8 @@ namespace Camera3D
 {
     public class ThirdPersonCamera : MonoBehaviour
     {
+        public static ThirdPersonCamera Main { get; private set; }
+        
         #region Serialized Fields
 
         [SerializeField] private LayerMask obstacleLayer;
@@ -25,9 +27,17 @@ namespace Camera3D
         [SerializeField] private float maxTargetDistance = 100.0f;
         [SerializeField] private float maxRotationDelta = 360.0f;
 
+        [SerializeField] private Transform followTransform;
+
         #endregion
 
         #region Properties
+
+        public Transform FollowTransform
+        {
+            get => followTransform;
+            set => followTransform = value;
+        }
         
         public Camera Camera { get; private set; }
 
@@ -93,19 +103,30 @@ namespace Camera3D
             {
                 return;
             }
-            
+
             Transform myTransform = transform;
             myTransform.Rotate(Vector3.up, angles.x, Space.World);
 
             Quaternion localRotation = myTransform.localRotation;
             Quaternion rotator = Quaternion.AngleAxis(-angles.y, Vector3.right);
-            Quaternion newRotation = localRotation * rotator;
+            myTransform.localRotation = localRotation * rotator;
 
-            Vector3 localEulerAngles = newRotation.eulerAngles;
+            Vector3 localEulerAngles = myTransform.localEulerAngles;
 
-            if (localEulerAngles.x < 60.0f || localEulerAngles.x > 310.0f)
+            if (localEulerAngles.x > 60.0f && localEulerAngles.x < 310.0f)
             {
-                myTransform.localRotation = newRotation;
+                if (localEulerAngles.x < 180.0f)
+                {
+                    localEulerAngles.x = 60.0f;
+                    localEulerAngles.z = 0.0f;
+                    myTransform.localEulerAngles = localEulerAngles; 
+                }
+                else
+                {
+                    localEulerAngles.x = -50.0f;
+                    localEulerAngles.z = 0.0f;
+                    myTransform.localEulerAngles = localEulerAngles;
+                }
             }
         }
 
@@ -131,6 +152,11 @@ namespace Camera3D
         private void Awake()
         {
             Camera = GetComponentInChildren<Camera>(true);
+
+            if (gameObject.CompareTag("MainCamera"))
+            {
+                Main = this;
+            }
         }
 
         private void LateUpdate()
@@ -145,16 +171,26 @@ namespace Camera3D
                 
                 Vector3 localEulerAngles = myTransform.localEulerAngles;
                 
-                if (localEulerAngles.x > 60.0f && localEulerAngles.x < 180.0f)
+                if (localEulerAngles.x > 60.0f && localEulerAngles.x < 310.0f)
                 {
-                    localEulerAngles.x = 60.0f;
-                    myTransform.localEulerAngles = localEulerAngles; 
+                    if (localEulerAngles.x < 180.0f)
+                    {
+                        localEulerAngles.x = 60.0f;
+                        localEulerAngles.z = 0.0f;
+                        myTransform.localEulerAngles = localEulerAngles; 
+                    }
+                    else
+                    {
+                        localEulerAngles.x = -50.0f;
+                        localEulerAngles.z = 0.0f;
+                        myTransform.localEulerAngles = localEulerAngles;
+                    }
                 }
-                else if (localEulerAngles.x < 310.0f && localEulerAngles.x > 180.0f)
-                {
-                    localEulerAngles.x = -50.0f;
-                    myTransform.localEulerAngles = localEulerAngles;
-                }
+            }
+
+            if (followTransform)
+            {
+                transform.position = followTransform.position;
             }
             
             cameraTransform.position = CameraPosition;

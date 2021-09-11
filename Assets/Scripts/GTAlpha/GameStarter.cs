@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace GTAlpha
 {
+    /// <summary>
+    /// 게임 시작시에 가장 먼저 호출되는 클래스로 초기화를 위한 각종 객체가 등록된다. 
+    /// </summary>
     public class GameStarter : MonoBehaviour
     {
         private static bool _isStarted;

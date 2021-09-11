@@ -13,6 +13,11 @@ namespace GTAlpha
 
         #region Const Fields
 
+
+        #endregion
+
+        #region Static Properties
+        
         public static int AnimationState { get; } = Animator.StringToHash("State");
         public static int AnimationFront { get; } = Animator.StringToHash("Front");
         public static int AnimationRight { get; } = Animator.StringToHash("Right");
@@ -21,10 +26,10 @@ namespace GTAlpha
         public static int AnimationKey { get; } = Animator.StringToHash("Key");
         public static int AnimationAttack { get; } = Animator.StringToHash("Attack");
 
-
-        #endregion
-
-        #region Static Properties
+        public static int NormalState => _main.normalState;
+        public static int HitState => _main.hitState;
+        public static int DieState => _main.dieState;
+        public static int AttackState => _main.attackState;
 
         public static float MaxRotationDelta => _main.maxRotationDelta;
         public static float MovementInertiaDeltaOnGround => _main.movementInertiaDeltaOnGround;
@@ -48,6 +53,11 @@ namespace GTAlpha
         #endregion
 
         #region Serialize Fields
+
+        [SerializeField] private int normalState = 0;
+        [SerializeField] private int hitState = 1;
+        [SerializeField] private int dieState = 2;
+        [SerializeField] private int attackState = 3;
 
         [SerializeField] private float maxRotationDelta = 720.0f;
         [SerializeField] private float movementInertiaDeltaOnGround = 5.0f;
