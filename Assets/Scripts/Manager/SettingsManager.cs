@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Manager
 {
+    /// <summary>
+    /// 게임 내에 설정된 모든 환경설정 정보를 저장하고 관리하는 정적 클래스
+    /// </summary>
     public static class SettingsManager
     {
         

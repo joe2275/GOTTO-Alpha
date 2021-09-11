@@ -17,9 +17,9 @@ MonoBehaviour:
   offensivePower: 100
   defensivePower: 10
   moveSpeedIncrease: 0
-  elementalType: 1
+  element: 1
   elementalPower: 50
   slashPower: 50
   penetrationPower: 10
   blowPower: 40
-  weaponType: 0
+  weaponForm: Testing Form

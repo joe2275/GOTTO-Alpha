@@ -13,34 +13,52 @@ namespace GTAlpha.Editor
             for (int i = 0; i < playerAttackFormArrayProp.arraySize; i++)
             {
                 SerializedProperty playerAttackFormProp = playerAttackFormArrayProp.GetArrayElementAtIndex(i);
-                SerializedProperty singleTargetMotionArrayProp = playerAttackFormProp.FindPropertyRelative("singleTargetMotionArray");
-                SerializedProperty multipleTargetMotionArrayProp =
-                    playerAttackFormProp.FindPropertyRelative("multipleTargetMotionArray");
+                SerializedProperty attackMotionArrayProp =
+                    playerAttackFormProp.FindPropertyRelative("attackMotionArray");
 
-                EditorGUILayout.LabelField($"{i+1}. {((WeaponForm)i).ToString()}");
+                EditorGUILayout.LabelField($"{i + 1}. {Weapon.Forms[i]}");
 
                 int attackMotionRemoveIndex = -1;
-                EditorGUILayout.LabelField("Single Target Attack");
-                for (int j = 0; j < singleTargetMotionArrayProp.arraySize; j++)
+                for (int j = 0; j < attackMotionArrayProp.arraySize; j++)
                 {
-                    SerializedProperty singleTargetMotionProp = singleTargetMotionArrayProp.GetArrayElementAtIndex(j);
+                    SerializedProperty attackMotionProp = attackMotionArrayProp.GetArrayElementAtIndex(j);
 
-                    SerializedProperty keyProp = singleTargetMotionProp.FindPropertyRelative("key");
+                    SerializedProperty keyProp = attackMotionProp.FindPropertyRelative("key");
                     SerializedProperty connectionKeyArrayInProp =
-                        singleTargetMotionProp.FindPropertyRelative("connectionKeyArrayIn");
+                        attackMotionProp.FindPropertyRelative("connectionKeyArrayIn");
                     SerializedProperty connectionKeyArrayOutProp =
-                        singleTargetMotionProp.FindPropertyRelative("connectionKeyArrayOut");
-                    SerializedProperty fullTimeProp = singleTargetMotionProp.FindPropertyRelative("fullTime");
-                    SerializedProperty attackTimeProp = singleTargetMotionProp.FindPropertyRelative("attackTime");
+                        attackMotionProp.FindPropertyRelative("connectionKeyArrayOut");
+                    SerializedProperty isNextAttackTimeFixedProp = attackMotionProp.FindPropertyRelative(
+                        "isNextAttackTimeFixed");
+                    SerializedProperty nextAttackTimeProp = attackMotionProp.FindPropertyRelative("nextAttackTime");
+                    SerializedProperty minNextAttackTimeProp =
+                        attackMotionProp.FindPropertyRelative("minNextAttackTime");
+                    SerializedProperty maxNextAttackTimeProp =
+                        attackMotionProp.FindPropertyRelative("maxNextAttackTime");
 
+                    isNextAttackTimeFixedProp.boolValue = EditorGUILayout.Toggle("Fixed Next Attack Time",
+                        isNextAttackTimeFixedProp.boolValue);
+                    
                     EditorGUILayout.BeginHorizontal();
                     keyProp.intValue = Mathf.Max(EditorGUILayout.IntField("Key", keyProp.intValue), 0);
-                    if (GUILayout.Button("Remove Attack Motion"))
+                    if (isNextAttackTimeFixedProp.boolValue)
                     {
-                        attackMotionRemoveIndex = j;
+                        nextAttackTimeProp.floatValue =
+                            Mathf.Max(EditorGUILayout.FloatField("Next Time", nextAttackTimeProp.floatValue), 0.0f);
+                    }
+                    else
+                    {
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        minNextAttackTimeProp.floatValue =
+                            Mathf.Max(EditorGUILayout.FloatField("Min Time", minNextAttackTimeProp.floatValue), 0.0f);
+                        maxNextAttackTimeProp.floatValue = Mathf.Max(EditorGUILayout.FloatField("Max Time",
+                            maxNextAttackTimeProp.floatValue), minNextAttackTimeProp.floatValue);
                     }
                     EditorGUILayout.EndHorizontal();
 
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.BeginVertical();
                     EditorGUILayout.LabelField("Connection In Keys");
 
                     int removeIndex = -1;
@@ -55,6 +73,7 @@ namespace GTAlpha.Editor
                         {
                             removeIndex = k;
                         }
+
                         EditorGUILayout.EndHorizontal();
                     }
 
@@ -63,14 +82,17 @@ namespace GTAlpha.Editor
                         connectionKeyArrayInProp.DeleteArrayElementAtIndex(removeIndex);
                         removeIndex = -1;
                     }
-                    
+
                     if (GUILayout.Button("Add Connection In Key"))
                     {
                         connectionKeyArrayInProp.InsertArrayElementAtIndex(connectionKeyArrayInProp.arraySize);
                     }
-                    
+
+                    EditorGUILayout.EndVertical();
+
+                    EditorGUILayout.BeginVertical();
                     EditorGUILayout.LabelField("Connection Out Keys");
-                    
+
                     for (int k = 0; k < connectionKeyArrayOutProp.arraySize; k++)
                     {
                         SerializedProperty connectionKeyOutProp = connectionKeyArrayOutProp.GetArrayElementAtIndex(k);
@@ -82,6 +104,7 @@ namespace GTAlpha.Editor
                         {
                             removeIndex = k;
                         }
+
                         EditorGUILayout.EndHorizontal();
                     }
 
@@ -89,141 +112,39 @@ namespace GTAlpha.Editor
                     {
                         connectionKeyArrayOutProp.DeleteArrayElementAtIndex(removeIndex);
                     }
-                    
+
                     if (GUILayout.Button("Add Connection Out Key"))
                     {
                         connectionKeyArrayOutProp.InsertArrayElementAtIndex(connectionKeyArrayOutProp.arraySize);
                     }
 
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndHorizontal();
+
                     EditorGUILayout.Space();
 
-                    fullTimeProp.floatValue =
-                        Mathf.Max(EditorGUILayout.FloatField("Full Motion Time", fullTimeProp.floatValue), 0.0f);
-
-                    attackTimeProp.floatValue =
-                        Mathf.Clamp(EditorGUILayout.FloatField("Motion's Attack Time", attackTimeProp.floatValue), 0.0f,
-                            fullTimeProp.floatValue);
-                    
-                    EditorGUILayout.Space();
+                    if (GUILayout.Button("Remove Attack Motion"))
+                    {
+                        attackMotionRemoveIndex = j;
+                    }
                 }
 
                 if (attackMotionRemoveIndex > -1)
                 {
-                    singleTargetMotionArrayProp.DeleteArrayElementAtIndex(attackMotionRemoveIndex);
+                    attackMotionArrayProp.DeleteArrayElementAtIndex(attackMotionRemoveIndex);
                     attackMotionRemoveIndex = -1;
                 }
-                
+
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
 
-                if (GUILayout.Button("Add Single Target Attack Motion"))
+                if (GUILayout.Button("Add Attack Motion"))
                 {
-                    singleTargetMotionArrayProp.InsertArrayElementAtIndex(singleTargetMotionArrayProp.arraySize);
-                }
-                
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                
-                EditorGUILayout.LabelField("Multiple Target Attack");
-                for (int j = 0; j < multipleTargetMotionArrayProp.arraySize; j++)
-                {
-                    SerializedProperty multipleTargetMotionProp = multipleTargetMotionArrayProp.GetArrayElementAtIndex(j);
-
-                    SerializedProperty keyProp = multipleTargetMotionProp.FindPropertyRelative("key");
-                    SerializedProperty connectionKeyArrayInProp =
-                        multipleTargetMotionProp.FindPropertyRelative("connectionKeyArrayIn");
-                    SerializedProperty connectionKeyArrayOutProp =
-                        multipleTargetMotionProp.FindPropertyRelative("connectionKeyArrayOut");
-                    SerializedProperty fullTimeProp = multipleTargetMotionProp.FindPropertyRelative("fullTime");
-                    SerializedProperty attackTimeProp = multipleTargetMotionProp.FindPropertyRelative("attackTime");
-
-                    EditorGUILayout.BeginHorizontal();
-                    keyProp.intValue = Mathf.Max(EditorGUILayout.IntField("Key", keyProp.intValue), 0);
-                    if (GUILayout.Button("Remove Attack Motion"))
-                    {
-                        attackMotionRemoveIndex = j;
-                    }
-                    EditorGUILayout.EndHorizontal();
-
-                    EditorGUILayout.LabelField("Connection In Keys");
-
-                    int removeIndex = -1;
-                    for (int k = 0; k < connectionKeyArrayInProp.arraySize; k++)
-                    {
-                        SerializedProperty connectionKeyInProp = connectionKeyArrayInProp.GetArrayElementAtIndex(k);
-
-                        EditorGUILayout.BeginHorizontal();
-                        connectionKeyInProp.intValue =
-                            Mathf.Max(EditorGUILayout.IntField(connectionKeyInProp.intValue), 0);
-                        if (GUILayout.Button("Remove"))
-                        {
-                            removeIndex = k;
-                        }
-                        EditorGUILayout.EndHorizontal();
-                    }
-
-                    if (removeIndex > -1)
-                    {
-                        connectionKeyArrayInProp.DeleteArrayElementAtIndex(removeIndex);
-                        removeIndex = -1;
-                    }
-                    
-                    if (GUILayout.Button("Add Connection In Key"))
-                    {
-                        connectionKeyArrayInProp.InsertArrayElementAtIndex(connectionKeyArrayInProp.arraySize);
-                    }
-                    
-                    EditorGUILayout.LabelField("Connection Out Keys");
-                    
-                    for (int k = 0; k < connectionKeyArrayOutProp.arraySize; k++)
-                    {
-                        SerializedProperty connectionKeyOutProp = connectionKeyArrayOutProp.GetArrayElementAtIndex(k);
-
-                        EditorGUILayout.BeginHorizontal();
-                        connectionKeyOutProp.intValue =
-                            Mathf.Max(EditorGUILayout.IntField(connectionKeyOutProp.intValue), 0);
-                        if (GUILayout.Button("Remove"))
-                        {
-                            removeIndex = k;
-                        }
-                        EditorGUILayout.EndHorizontal();
-                    }
-
-                    if (removeIndex > -1)
-                    {
-                        connectionKeyArrayOutProp.DeleteArrayElementAtIndex(removeIndex);
-                    }
-                    
-                    if (GUILayout.Button("Add Connection Out Key"))
-                    {
-                        connectionKeyArrayOutProp.InsertArrayElementAtIndex(connectionKeyArrayOutProp.arraySize);
-                    }
-                    
-                    EditorGUILayout.Space();
-                    fullTimeProp.floatValue =
-                        Mathf.Max(EditorGUILayout.FloatField("Full Motion Time", fullTimeProp.floatValue), 0.0f);
-
-                    attackTimeProp.floatValue =
-                        Mathf.Clamp(EditorGUILayout.FloatField("Motion's Attack Time", attackTimeProp.floatValue), 0.0f,
-                            fullTimeProp.floatValue);
-                    EditorGUILayout.Space();
-                }
-
-                if (attackMotionRemoveIndex > -1)
-                {
-                    multipleTargetMotionArrayProp.DeleteArrayElementAtIndex(attackMotionRemoveIndex);
-                }
-
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                
-                if (GUILayout.Button("Add Multiple Target Attack Motion"))
-                {
-                    multipleTargetMotionArrayProp.InsertArrayElementAtIndex(multipleTargetMotionArrayProp.arraySize);
+                    attackMotionArrayProp.InsertArrayElementAtIndex(attackMotionArrayProp.arraySize);
                 }
             }
 
-            playerAttackFormArrayProp.arraySize = (int) WeaponForm.Count;
+            playerAttackFormArrayProp.arraySize = Weapon.Forms.Length;
 
             serializedObject.ApplyModifiedProperties();
         }

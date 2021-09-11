@@ -7,16 +7,11 @@
         Earth
     }
 
-    public enum WeaponForm
+    public enum AttackResult
     {
-        TestingForm, 
-        
-        Count
-    }
-
-    public enum AttackWay
-    {
-        Single, 
-        Multiple
+        None = -1, 
+        Bad, 
+        Good, 
+        Perfect
     }
 }

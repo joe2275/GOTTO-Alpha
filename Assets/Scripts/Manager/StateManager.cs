@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Manager
 {
+    /// <summary>
+    /// 게임 내에서 사용되는 모든 상태를 관리하는 정적 클래스
+    /// </summary>
     public static class StateManager
     {
         public static StateHandler<bool> Pause { get; private set; }

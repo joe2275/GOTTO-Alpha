@@ -1,28 +1,21 @@
-using Manager;
+﻿using Manager;
 using StateBase;
 using UnityEngine;
 
 namespace GTAlpha
 {
+    /// <summary>
+    /// 게임에서 어떠한 방식으로든 움직이거나 상호작용 할 수 있는 모든 객체들이 상속하는 Actor 클래스
+    /// </summary>
+    [RequireComponent(typeof(Animator))]
     public class Actor : StateBase<int>
     {
-        #region State Constants
-
-        public const int MoveState = 0;
-        public const int HitState = 1;
-        public const int DieState = 2;
-        public const int ReadyToAttackState = 3;
-        public const int AttackState = 4;
-
-        #endregion
-
         #region Serialized Fields
-
-        [SerializeField] private Transform bodyTransform;
-        [SerializeField] private Animator avatarAnimator;
+        
         [SerializeField] private Transform centerTransform;
         [SerializeField] private Transform forwardTransform;
-
+        [SerializeField] private Transform rightTransform;
+        
         #endregion
 
         #region Fields
@@ -30,81 +23,47 @@ namespace GTAlpha
         #endregion
 
         #region Properties
-
-        public Animator AvatarAnimator => avatarAnimator;
+        
+        /// <summary>
+        /// Actor의 최상위 GameObject가 가지는 Animator
+        /// </summary>
+        public Animator Animator { get; private set; }
+        /// <summary>
+        /// Actor의 중심이 되는 위치
+        /// </summary>
+        public Transform CenterTransform => centerTransform;
+        /// <summary>
+        /// Actor의 앞을 가리키는 정규화된 위치
+        /// </summary>
         public Vector3 Forward => forwardTransform.position - centerTransform.position;
-
-        public Vector3 Right
-        {
-            get
-            {
-                Vector3 forward = Forward;
-                return new Vector3(forward.z, 0.0f, -forward.x);
-            }
-        }
-
-        public Quaternion Rotation
-        {
-            get => bodyTransform.rotation;
-            set => bodyTransform.rotation = value;
-        }
-
+        /// <summary>
+        /// Actor의 오른쪽을 가리키는 정규화된 위치
+        /// </summary>
+        public Vector3 Right => rightTransform.position - centerTransform.position;
+        /// <summary>
+        /// Actor가 사용하는 게임적 수치를 관리하는 Status
+        /// </summary>
         public Status Status { get; protected set; }
-        public ActorInput Input { get; protected set; }
-        public Vector2 MoveVelocity { get; private set; }
 
         #endregion
 
-        #region Public Functions
+        #region Normal State Events
 
-        public void Move(Vector3 movement, Space space = Space.Self)
+        protected virtual void StartOnNormal()
         {
-            transform.Translate(movement, space);
+            Animator.SetInteger(Constant.AnimationState, Constant.NormalState);
         }
 
-        public void Rotate(float angle)
-        {
-            bodyTransform.Rotate(Vector3.up, angle);
-        }
-
-        public void RotateTo(Vector3 forward)
-        {
-            bodyTransform.rotation = Quaternion.FromToRotation(Forward, forward);
-        }
-
-        #endregion
-
-        #region Move State Events
-
-        protected virtual void StartOnMove()
-        {
-            avatarAnimator.SetInteger(Constant.AnimationState, MoveState);
-            
-            avatarAnimator.SetFloat(Constant.AnimationFront, 0.0f);
-            avatarAnimator.SetFloat(Constant.AnimationRight, 0.0f);
-
-            // MoveVelocity = Vector2.zero;
-        }
-
-        protected virtual void EndOnMove()
+        protected virtual void EndOnNormal()
         {
         }
 
-        protected virtual void UpdateOnMove()
+        protected virtual void UpdateOnNormal()
         {
         }
 
-        protected virtual void FixedUpdateOnMove()
+        protected virtual void FixedUpdateOnNormal()
         {
-            AdjustMoveVelocity(Constant.MoveVelocityDeltaOnGround * Time.fixedDeltaTime);
-
-            Vector3 forward = Forward;
-            Vector3 right = Right;
-
-            Move((forward * MoveVelocity.y + right * MoveVelocity.x) * (Status.MoveSpeed * Time.fixedDeltaTime), Space.World);
-            
-            avatarAnimator.SetFloat(Constant.AnimationFront, MoveVelocity.y);
-            avatarAnimator.SetFloat(Constant.AnimationRight, MoveVelocity.x);
         }
 
         #endregion
@@ -113,7 +72,7 @@ namespace GTAlpha
 
         protected virtual void StartOnHit()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, HitState);
+            Animator.SetInteger(Constant.AnimationState, Constant.HitState);
         }
 
         protected virtual void EndOnHit()
@@ -134,7 +93,7 @@ namespace GTAlpha
 
         protected virtual void StartOnDie()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, DieState);
+            Animator.SetInteger(Constant.AnimationState, Constant.DieState);
         }
 
         protected virtual void EndOnDie()
@@ -151,35 +110,11 @@ namespace GTAlpha
 
         #endregion
 
-        #region Ready To Attack State Events
-
-        protected virtual void StartOnReadyToAttack()
-        {
-            avatarAnimator.SetInteger(Constant.AnimationState, ReadyToAttackState);
-        }
-
-        protected virtual void EndOnReadyToAttack()
-        {
-            
-        }
-
-        protected virtual void UpdateOnReadyToAttack()
-        {
-            
-        }
-
-        protected virtual void FixedUpdateOnReadyToAttack()
-        {
-            
-        }
-
-        #endregion
-
         #region Attack State Events
 
         protected virtual void StartOnAttack()
         {
-            avatarAnimator.SetInteger(Constant.AnimationState, AttackState);
+            Animator.SetInteger(Constant.AnimationState, Constant.AttackState);
         }
 
         protected virtual void EndOnAttack()
@@ -201,20 +136,23 @@ namespace GTAlpha
         protected override void Awake()
         {
             base.Awake();
+            
+            Animator = GetComponent<Animator>();
 
-            #region Set Move State
+            #region Set Normal State
 
-            State<int> move = new State<int>(MoveState)
+            State<int> normal = new State<int>(Constant.NormalState)
             {
-                OnStart = StartOnMove, OnEnd = EndOnMove, OnUpdate = UpdateOnMove, OnFixedUpdate = FixedUpdateOnMove
+                OnStart = StartOnNormal, OnEnd = EndOnNormal, OnUpdate = UpdateOnNormal,
+                OnFixedUpdate = FixedUpdateOnNormal
             };
-            SetState(move);
+            SetState(normal);
 
             #endregion
 
             #region Set Hit State
 
-            State<int> hit = new State<int>(HitState)
+            State<int> hit = new State<int>(Constant.HitState)
             {
                 OnStart = StartOnHit, OnEnd = EndOnHit, OnUpdate = UpdateOnHit, OnFixedUpdate = FixedUpdateOnHit
             };
@@ -224,7 +162,7 @@ namespace GTAlpha
 
             #region Set Die State
 
-            State<int> die = new State<int>(DieState)
+            State<int> die = new State<int>(Constant.DieState)
             {
                 OnStart = StartOnDie, OnEnd = EndOnDie, OnUpdate = UpdateOnDie, OnFixedUpdate = FixedUpdateOnDie
             };
@@ -234,7 +172,7 @@ namespace GTAlpha
 
             #region Set Attack State
 
-            State<int> attack = new State<int>(AttackState)
+            State<int> attack = new State<int>(Constant.AttackState)
             {
                 OnStart = StartOnAttack, OnEnd = EndOnAttack, OnUpdate = UpdateOnAttack,
                 OnFixedUpdate = FixedUpdateOnAttack
@@ -242,22 +180,11 @@ namespace GTAlpha
             SetState(attack);
 
             #endregion
-
-            #region Set Ready To Attack State
-
-            State<int> readyToAttack = new State<int>(ReadyToAttackState)
-            {
-                OnStart = StartOnReadyToAttack, OnEnd = EndOnReadyToAttack, OnUpdate = UpdateOnReadyToAttack,
-                OnFixedUpdate = FixedUpdateOnReadyToAttack
-            };
-            SetState(readyToAttack);
-
-            #endregion
         }
 
         protected virtual void Start()
         {
-            State = MoveState;
+            State = Constant.NormalState;
         }
 
         protected override void Update()
@@ -278,19 +205,6 @@ namespace GTAlpha
             }
 
             base.FixedUpdate();
-        }
-
-        protected void AdjustMoveVelocity(float maxDelta)
-        {
-            Vector2 movement = Input.Movement;
-            // 이동 입력 정규화
-            float magnitude = movement.magnitude;
-            if (magnitude > 1.0f + Mathf.Epsilon)
-            {
-                movement /= magnitude;
-            }
-
-            MoveVelocity = Vector2.MoveTowards(MoveVelocity, movement, maxDelta);
         }
 
         #endregion

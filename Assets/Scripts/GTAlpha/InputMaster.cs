@@ -53,7 +53,7 @@ namespace GTAlpha
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""AttackSingleTarget"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""a53304d7-0463-4f2d-bf28-62351ed7011b"",
                     ""expectedControlType"": ""Button"",
@@ -61,7 +61,7 @@ namespace GTAlpha
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""AttackMultipleTarget"",
+                    ""name"": ""Defense"",
                     ""type"": ""Button"",
                     ""id"": ""f6cf4d47-6d41-44a7-8a00-cf5e8c777252"",
                     ""expectedControlType"": ""Button"",
@@ -120,6 +120,14 @@ namespace GTAlpha
                     ""name"": ""Weapon 3"",
                     ""type"": ""Button"",
                     ""id"": ""fd9a0dee-84d4-4e0a-b420-d262d9186829"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""19643e81-bfac-4465-b7f7-06a37cdeca8e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -287,7 +295,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""AttackSingleTarget"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -298,7 +306,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""AttackSingleTarget"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -309,7 +317,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""AttackMultipleTarget"",
+                    ""action"": ""Defense"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -320,7 +328,7 @@ namespace GTAlpha
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Player"",
-                    ""action"": ""AttackMultipleTarget"",
+                    ""action"": ""Defense"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -587,6 +595,28 @@ namespace GTAlpha
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc0b6f7e-716b-490e-b1b0-e41f0be44a45"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34e5f728-6982-4ff4-9adf-f0468c62aabf"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -621,8 +651,8 @@ namespace GTAlpha
             m_InGame_Rotate = m_InGame.FindAction("Rotate", throwIfNotFound: true);
             m_InGame_Evade = m_InGame.FindAction("Evade", throwIfNotFound: true);
             m_InGame_JumpParkour = m_InGame.FindAction("Jump & Parkour", throwIfNotFound: true);
-            m_InGame_AttackSingleTarget = m_InGame.FindAction("AttackSingleTarget", throwIfNotFound: true);
-            m_InGame_AttackMultipleTarget = m_InGame.FindAction("AttackMultipleTarget", throwIfNotFound: true);
+            m_InGame_Attack = m_InGame.FindAction("Attack", throwIfNotFound: true);
+            m_InGame_Defense = m_InGame.FindAction("Defense", throwIfNotFound: true);
             m_InGame_Skill1 = m_InGame.FindAction("Skill 1", throwIfNotFound: true);
             m_InGame_Skill2 = m_InGame.FindAction("Skill 2", throwIfNotFound: true);
             m_InGame_UseItem = m_InGame.FindAction("Use Item", throwIfNotFound: true);
@@ -630,6 +660,7 @@ namespace GTAlpha
             m_InGame_Weapon1 = m_InGame.FindAction("Weapon 1", throwIfNotFound: true);
             m_InGame_Weapon2 = m_InGame.FindAction("Weapon 2", throwIfNotFound: true);
             m_InGame_Weapon3 = m_InGame.FindAction("Weapon 3", throwIfNotFound: true);
+            m_InGame_LockOn = m_InGame.FindAction("LockOn", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -683,8 +714,8 @@ namespace GTAlpha
         private readonly InputAction m_InGame_Rotate;
         private readonly InputAction m_InGame_Evade;
         private readonly InputAction m_InGame_JumpParkour;
-        private readonly InputAction m_InGame_AttackSingleTarget;
-        private readonly InputAction m_InGame_AttackMultipleTarget;
+        private readonly InputAction m_InGame_Attack;
+        private readonly InputAction m_InGame_Defense;
         private readonly InputAction m_InGame_Skill1;
         private readonly InputAction m_InGame_Skill2;
         private readonly InputAction m_InGame_UseItem;
@@ -692,6 +723,7 @@ namespace GTAlpha
         private readonly InputAction m_InGame_Weapon1;
         private readonly InputAction m_InGame_Weapon2;
         private readonly InputAction m_InGame_Weapon3;
+        private readonly InputAction m_InGame_LockOn;
         public struct InGameActions
         {
             private @InputMaster m_Wrapper;
@@ -700,8 +732,8 @@ namespace GTAlpha
             public InputAction @Rotate => m_Wrapper.m_InGame_Rotate;
             public InputAction @Evade => m_Wrapper.m_InGame_Evade;
             public InputAction @JumpParkour => m_Wrapper.m_InGame_JumpParkour;
-            public InputAction @AttackSingleTarget => m_Wrapper.m_InGame_AttackSingleTarget;
-            public InputAction @AttackMultipleTarget => m_Wrapper.m_InGame_AttackMultipleTarget;
+            public InputAction @Attack => m_Wrapper.m_InGame_Attack;
+            public InputAction @Defense => m_Wrapper.m_InGame_Defense;
             public InputAction @Skill1 => m_Wrapper.m_InGame_Skill1;
             public InputAction @Skill2 => m_Wrapper.m_InGame_Skill2;
             public InputAction @UseItem => m_Wrapper.m_InGame_UseItem;
@@ -709,6 +741,7 @@ namespace GTAlpha
             public InputAction @Weapon1 => m_Wrapper.m_InGame_Weapon1;
             public InputAction @Weapon2 => m_Wrapper.m_InGame_Weapon2;
             public InputAction @Weapon3 => m_Wrapper.m_InGame_Weapon3;
+            public InputAction @LockOn => m_Wrapper.m_InGame_LockOn;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -730,12 +763,12 @@ namespace GTAlpha
                     @JumpParkour.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnJumpParkour;
                     @JumpParkour.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnJumpParkour;
                     @JumpParkour.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnJumpParkour;
-                    @AttackSingleTarget.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackSingleTarget;
-                    @AttackSingleTarget.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackSingleTarget;
-                    @AttackSingleTarget.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackSingleTarget;
-                    @AttackMultipleTarget.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackMultipleTarget;
-                    @AttackMultipleTarget.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackMultipleTarget;
-                    @AttackMultipleTarget.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttackMultipleTarget;
+                    @Attack.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack;
+                    @Attack.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack;
+                    @Attack.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnAttack;
+                    @Defense.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnDefense;
+                    @Defense.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnDefense;
+                    @Defense.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnDefense;
                     @Skill1.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill1;
                     @Skill1.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill1;
                     @Skill1.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnSkill1;
@@ -757,6 +790,9 @@ namespace GTAlpha
                     @Weapon3.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnWeapon3;
                     @Weapon3.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnWeapon3;
                     @Weapon3.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnWeapon3;
+                    @LockOn.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnLockOn;
+                    @LockOn.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnLockOn;
+                    @LockOn.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnLockOn;
                 }
                 m_Wrapper.m_InGameActionsCallbackInterface = instance;
                 if (instance != null)
@@ -773,12 +809,12 @@ namespace GTAlpha
                     @JumpParkour.started += instance.OnJumpParkour;
                     @JumpParkour.performed += instance.OnJumpParkour;
                     @JumpParkour.canceled += instance.OnJumpParkour;
-                    @AttackSingleTarget.started += instance.OnAttackSingleTarget;
-                    @AttackSingleTarget.performed += instance.OnAttackSingleTarget;
-                    @AttackSingleTarget.canceled += instance.OnAttackSingleTarget;
-                    @AttackMultipleTarget.started += instance.OnAttackMultipleTarget;
-                    @AttackMultipleTarget.performed += instance.OnAttackMultipleTarget;
-                    @AttackMultipleTarget.canceled += instance.OnAttackMultipleTarget;
+                    @Attack.started += instance.OnAttack;
+                    @Attack.performed += instance.OnAttack;
+                    @Attack.canceled += instance.OnAttack;
+                    @Defense.started += instance.OnDefense;
+                    @Defense.performed += instance.OnDefense;
+                    @Defense.canceled += instance.OnDefense;
                     @Skill1.started += instance.OnSkill1;
                     @Skill1.performed += instance.OnSkill1;
                     @Skill1.canceled += instance.OnSkill1;
@@ -800,6 +836,9 @@ namespace GTAlpha
                     @Weapon3.started += instance.OnWeapon3;
                     @Weapon3.performed += instance.OnWeapon3;
                     @Weapon3.canceled += instance.OnWeapon3;
+                    @LockOn.started += instance.OnLockOn;
+                    @LockOn.performed += instance.OnLockOn;
+                    @LockOn.canceled += instance.OnLockOn;
                 }
             }
         }
@@ -819,8 +858,8 @@ namespace GTAlpha
             void OnRotate(InputAction.CallbackContext context);
             void OnEvade(InputAction.CallbackContext context);
             void OnJumpParkour(InputAction.CallbackContext context);
-            void OnAttackSingleTarget(InputAction.CallbackContext context);
-            void OnAttackMultipleTarget(InputAction.CallbackContext context);
+            void OnAttack(InputAction.CallbackContext context);
+            void OnDefense(InputAction.CallbackContext context);
             void OnSkill1(InputAction.CallbackContext context);
             void OnSkill2(InputAction.CallbackContext context);
             void OnUseItem(InputAction.CallbackContext context);
@@ -828,6 +867,7 @@ namespace GTAlpha
             void OnWeapon1(InputAction.CallbackContext context);
             void OnWeapon2(InputAction.CallbackContext context);
             void OnWeapon3(InputAction.CallbackContext context);
+            void OnLockOn(InputAction.CallbackContext context);
         }
     }
 }

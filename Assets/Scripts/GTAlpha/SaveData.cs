@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace GTAlpha
 {
+    /// <summary>
+    /// 저장되어야 하는 게임의 모든 플레이어 관련 저장 데이터
+    /// </summary>
     [Serializable]
     public class SaveData
     {
@@ -10,7 +13,10 @@ namespace GTAlpha
 
         private static SaveData _current;
         private static int _currentKey = -1;
-
+        
+        /// <summary>
+        /// 현재 사용하고 있는 저장 데이터 번호 (0 미만의 경우 어떠한 데이터도 사용하고 있지 않음)
+        /// </summary>
         public static int CurrentKey
         {
             get => _currentKey;
@@ -34,7 +40,12 @@ namespace GTAlpha
                 }
             }
         }
-
+        
+        /// <summary>
+        /// 전달된 key를 이용하여 해당하는 저장 데이터를 반환하는 함수
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static SaveData Get(int key)
         {
             string keyString = key.ToString();
@@ -43,6 +54,11 @@ namespace GTAlpha
                 : null;
         }
 
+        /// <summary>
+        /// 전달된 key를 이용하여 해당하는 저장 데이터를 삭제하는 함수
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static bool Delete(int key)
         {
             string keyString = key.ToString();
@@ -55,6 +71,10 @@ namespace GTAlpha
             return false;
         }
 
+        /// <summary>
+        /// 현재 사용되고 있는 저장 데이터를 저장시키는 함수
+        /// </summary>
+        /// <returns></returns>
         public static bool Save()
         {
             if (_currentKey < 0)
@@ -73,8 +93,9 @@ namespace GTAlpha
 
         #endregion
 
+        // 저장되는 모든 데이터를 선언한 Serialized Fields
         #region Serialized Fields
-
+        
         [SerializeField] private PlayerData playerData = new PlayerData();
         [SerializeField] private InventoryData inventoryData = new InventoryData();
 

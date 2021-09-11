@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Manager
 {
+    /// <summary>
+    /// 게임 내에서 사용되는 모든 문자열을 저장하고 관리하는 정적 클래스
+    /// Language에 설정된 언어로 문자열을 반환한다. 
+    /// </summary>
     public static class ScriptManager
     {
         private static Dictionary<string, Dictionary<string, string>> _scriptDict;

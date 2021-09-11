@@ -2,6 +2,9 @@
 
 namespace GTAlpha
 {
+    /// <summary>
+    /// 플레이어의 저장되고 변하지 않는 정보를 저장하는 클래스
+    /// </summary>
     [CreateAssetMenu(fileName = "New Player Information", menuName = "Information/Player", order = 0)]
     public class PlayerInfo : GlobalScriptableObject
     {

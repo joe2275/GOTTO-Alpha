@@ -1,8 +1,10 @@
 ﻿namespace GTAlpha
 {
-    public class MonsterStatus : Status
+    public class MonsterStatus : CharacterStatus
     {
         #region Public Properties
+
+        public override int Level { get; }
 
         public override int MaxHealthPoint { get; }
         public override int MaxStaminaPoint { get; }
