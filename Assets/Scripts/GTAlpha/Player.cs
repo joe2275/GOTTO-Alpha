@@ -20,6 +20,8 @@ namespace GTAlpha
 
         private bool mIsEndOfMotion;
         private bool mCanRotate;
+        private bool mCanAttack;
+        private int mAttackKey;
 
         #endregion
 
@@ -101,6 +103,7 @@ namespace GTAlpha
             PlayerAttackTimer.TimerOn(mAttackMotion.NextAttackTime);
             mIsEndOfMotion = false;
             mCanRotate = false;
+            mCanAttack = false;
             
             // 애니메이터 파라미터 설정
             Animator.SetInteger(Constant.AnimationForm, mWeaponFormIndex);
@@ -137,6 +140,16 @@ namespace GTAlpha
                 
             Animator.SetInteger(Constant.AnimationKey, mAttackMotion.Key);
             Animator.SetTrigger(Constant.AnimationAttack);
+        }
+
+        protected override void FixedUpdateOnAttack()
+        {
+            base.FixedUpdateOnAttack();
+
+            if (mCanAttack && TriggerHandler.GetTrigger(mAttackKey).IsTriggered)
+            {
+                print("Enemy Triggered!");
+            }
         }
 
         #endregion
@@ -305,6 +318,16 @@ namespace GTAlpha
         private void Animation_CanRotate(int enable)
         {
             mCanRotate = enable != 0;
+        }
+
+        private void Animation_CanAttack(int enable)
+        {
+            mCanAttack = enable != 0;
+        }
+
+        private void Animation_SetAttackTriggerKey(int key)
+        {
+            mAttackKey = key;
         }
 
         #endregion

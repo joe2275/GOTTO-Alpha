@@ -89,7 +89,7 @@ MonoBehaviour:
   obstacleDistance: 0
   targetLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
   maxTargetDistance: 100
   maxRotationDelta: 360
   followTransform: {fileID: 0}

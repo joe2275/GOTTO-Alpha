@@ -61,6 +61,17 @@ namespace TriggerHandling
         
         public void OnTriggerEnter(Collider collision)
         {
+            if (useTags)
+            {
+                for (int i = 0; i < detectableTags.Length; i++)
+                {
+                    if (collision.CompareTag(detectableTags[i]))
+                    {
+                        return;
+                    }
+                }
+            }
+
             mIsUpdated = true;
             mTriggeredColliderList.Add(collision);
             OnEnter?.Invoke(collision);
