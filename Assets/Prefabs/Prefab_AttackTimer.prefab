@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 2637337629999162689}
   - component: {fileID: 2637337629999162688}
   - component: {fileID: 2637337629999162702}
+  - component: {fileID: 5297633528352312225}
   m_Layer: 0
   m_Name: Prefab_AttackTimer
   m_TagString: Untagged
@@ -250,3 +251,15 @@ MonoBehaviour:
   timerToTransform: {fileID: 2637337628651089801}
   fromToScale: {x: 5, y: 1}
   targetTransform: {fileID: 0}
+--- !u!114 &5297633528352312225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2637337629999162700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae1fa8c2a3df4747b5483e0d2ed53489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

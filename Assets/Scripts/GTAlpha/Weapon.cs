@@ -16,7 +16,7 @@ namespace GTAlpha
         /// </summary>
         public static readonly string[] Forms =
         {
-            "Testing Form"
+            "One Handed Sword"
         };
 
         /// <summary>

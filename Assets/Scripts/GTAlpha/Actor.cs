@@ -10,6 +10,15 @@ namespace GTAlpha
     [RequireComponent(typeof(Animator))]
     public class Actor : StateBase<int>
     {
+        #region Constant
+
+        public const int NormalState = 0;
+        public const int HitState = 1;
+        public const int DieState = 2;
+        public const int AttackState = 3;
+
+        #endregion
+        
         #region Serialized Fields
         
         [SerializeField] private Transform centerTransform;
@@ -51,7 +60,7 @@ namespace GTAlpha
 
         protected virtual void StartOnNormal()
         {
-            Animator.SetInteger(Constant.AnimationState, Constant.NormalState);
+            Animator.SetInteger(Constant.AnimationState, NormalState);
         }
 
         protected virtual void EndOnNormal()
@@ -72,7 +81,7 @@ namespace GTAlpha
 
         protected virtual void StartOnHit()
         {
-            Animator.SetInteger(Constant.AnimationState, Constant.HitState);
+            Animator.SetInteger(Constant.AnimationState, HitState);
         }
 
         protected virtual void EndOnHit()
@@ -93,7 +102,7 @@ namespace GTAlpha
 
         protected virtual void StartOnDie()
         {
-            Animator.SetInteger(Constant.AnimationState, Constant.DieState);
+            Animator.SetInteger(Constant.AnimationState, DieState);
         }
 
         protected virtual void EndOnDie()
@@ -114,7 +123,7 @@ namespace GTAlpha
 
         protected virtual void StartOnAttack()
         {
-            Animator.SetInteger(Constant.AnimationState, Constant.AttackState);
+            Animator.SetInteger(Constant.AnimationState, AttackState);
         }
 
         protected virtual void EndOnAttack()
@@ -141,7 +150,7 @@ namespace GTAlpha
 
             #region Set Normal State
 
-            State<int> normal = new State<int>(Constant.NormalState)
+            State<int> normal = new State<int>(NormalState)
             {
                 OnStart = StartOnNormal, OnEnd = EndOnNormal, OnUpdate = UpdateOnNormal,
                 OnFixedUpdate = FixedUpdateOnNormal
@@ -152,7 +161,7 @@ namespace GTAlpha
 
             #region Set Hit State
 
-            State<int> hit = new State<int>(Constant.HitState)
+            State<int> hit = new State<int>(HitState)
             {
                 OnStart = StartOnHit, OnEnd = EndOnHit, OnUpdate = UpdateOnHit, OnFixedUpdate = FixedUpdateOnHit
             };
@@ -162,7 +171,7 @@ namespace GTAlpha
 
             #region Set Die State
 
-            State<int> die = new State<int>(Constant.DieState)
+            State<int> die = new State<int>(DieState)
             {
                 OnStart = StartOnDie, OnEnd = EndOnDie, OnUpdate = UpdateOnDie, OnFixedUpdate = FixedUpdateOnDie
             };
@@ -172,7 +181,7 @@ namespace GTAlpha
 
             #region Set Attack State
 
-            State<int> attack = new State<int>(Constant.AttackState)
+            State<int> attack = new State<int>(AttackState)
             {
                 OnStart = StartOnAttack, OnEnd = EndOnAttack, OnUpdate = UpdateOnAttack,
                 OnFixedUpdate = FixedUpdateOnAttack
@@ -184,7 +193,7 @@ namespace GTAlpha
 
         protected virtual void Start()
         {
-            State = Constant.NormalState;
+            State = NormalState;
         }
 
         protected override void Update()

@@ -24,6 +24,7 @@ namespace GTAlpha.Editor
                     SerializedProperty attackMotionProp = attackMotionArrayProp.GetArrayElementAtIndex(j);
 
                     SerializedProperty keyProp = attackMotionProp.FindPropertyRelative("key");
+                    SerializedProperty canBeStartMotionProp = attackMotionProp.FindPropertyRelative("canBeStartMotion");
                     SerializedProperty connectionKeyArrayInProp =
                         attackMotionProp.FindPropertyRelative("connectionKeyArrayIn");
                     SerializedProperty connectionKeyArrayOutProp =
@@ -36,6 +37,8 @@ namespace GTAlpha.Editor
                     SerializedProperty maxNextAttackTimeProp =
                         attackMotionProp.FindPropertyRelative("maxNextAttackTime");
 
+                    canBeStartMotionProp.boolValue =
+                        EditorGUILayout.Toggle("Can Be Start Motion", canBeStartMotionProp.boolValue);
                     isNextAttackTimeFixedProp.boolValue = EditorGUILayout.Toggle("Fixed Next Attack Time",
                         isNextAttackTimeFixedProp.boolValue);
                     

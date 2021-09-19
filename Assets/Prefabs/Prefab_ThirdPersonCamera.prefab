@@ -83,9 +83,9 @@ MonoBehaviour:
   rightTransform: {fileID: 1970599279}
   cameraTransform: {fileID: 3468968975481101893}
   focusDistance: 100
-  backwardDistance: 5
-  rightDistance: 2
-  upDistance: 1.5
+  backwardDistance: 3
+  rightDistance: 1
+  upDistance: 0.5
   obstacleDistance: 0
   targetLayer:
     serializedVersion: 2

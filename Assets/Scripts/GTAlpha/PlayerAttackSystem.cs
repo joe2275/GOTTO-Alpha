@@ -6,7 +6,7 @@ namespace GTAlpha
     /// <summary>
     /// 플레이어 공격 시스템을 책임지는 클래스
     /// </summary>
-    [CreateAssetMenu(fileName = "New Player Attack System", menuName = "Player Attack System", order = 0)]
+    [CreateAssetMenu(fileName = "New Player Attack System", menuName = "Player Attack/System", order = 0)]
     public class PlayerAttackSystem : GlobalScriptableObject
     {
         #region Serialized Fields
@@ -131,7 +131,7 @@ namespace GTAlpha
                 Debug.LogError($"Not Exist Start Motion - Weapon Form : {Weapon.Forms[weaponFormIndex]}");
                 return null;
             }
-            int index = _temporaryIndexList[Random.Range(0, _temporaryIndexList.Count)];
+            int index = Random.Range(0, _temporaryIndexList.Count);
             PlayerAttackMotion playerAttackMotion = playerAttackForm.GetAttackMotion(_temporaryIndexList[index]); 
             while (!playerAttackMotion.CanBeStartMotion)
             {
@@ -141,10 +141,10 @@ namespace GTAlpha
                     Debug.LogError($"Not Exist Start Motion - Weapon Form : {Weapon.Forms[weaponFormIndex]}");
                     return null;
                 }
-                index = _temporaryIndexList[Random.Range(0, _temporaryIndexList.Count)];
+                index = Random.Range(0, _temporaryIndexList.Count);
                 playerAttackMotion = playerAttackForm.GetAttackMotion(_temporaryIndexList[index]);
             }
-
+            
             return playerAttackMotion;
         }
 
@@ -175,7 +175,7 @@ namespace GTAlpha
             
             var attackMotionConnectionInDict = _attackMotionConnectionInDictArray[weaponFormIndex];
 
-            List<PlayerAttackMotion> attackMotionList = attackMotionConnectionInDict[Random.Range(0, motion.CountOfConnectionKeysOut)];
+            List<PlayerAttackMotion> attackMotionList = attackMotionConnectionInDict[motion.GetConnectionTypeOut(Random.Range(0, motion.CountOfConnectionKeysOut))];
             return attackMotionList[Random.Range(0, attackMotionList.Count)];
         }
 

@@ -2688,7 +2688,6 @@ MonoBehaviour:
   centerTransform: {fileID: 8865847484669010585}
   forwardTransform: {fileID: 8865847484043591439}
   rightTransform: {fileID: 8865847483847646450}
-  attackTimer: {fileID: 6886115747858834295}
 --- !u!114 &8865847484365371410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3052,14 +3051,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2637337629999162701, guid: 5e5fa7aa936b55045b5658aeb2bf4e78, type: 3}
   m_PrefabInstance: {fileID: 8865847483881195065}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6886115747858834295 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2637337629999162702, guid: 5e5fa7aa936b55045b5658aeb2bf4e78, type: 3}
-  m_PrefabInstance: {fileID: 8865847483881195065}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 290404d7831e4b528a0707db9846e607, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -15,26 +15,34 @@ MonoBehaviour:
   playerAttackFormArray:
   - attackMotionArray:
     - key: 0
-      connectionKeyArrayIn: 00000000
-      connectionKeyArrayOut: 01000000
-      isNextAttackTimeFixed: 1
+      connectionKeyArrayIn: 02000000
+      connectionKeyArrayOut: 0000000001000000
+      isNextAttackTimeFixed: 0
       nextAttackTime: 1
-      minNextAttackTime: 0
-      maxNextAttackTime: 0
+      minNextAttackTime: 0.8
+      maxNextAttackTime: 1.5
       canBeStartMotion: 1
     - key: 1
-      connectionKeyArrayIn: 01000000
+      connectionKeyArrayIn: 00000000
+      connectionKeyArrayOut: 0200000003000000
+      isNextAttackTimeFixed: 0
+      nextAttackTime: 1.5
+      minNextAttackTime: 0.8
+      maxNextAttackTime: 1.5
+      canBeStartMotion: 1
+    - key: 2
+      connectionKeyArrayIn: 03000000
       connectionKeyArrayOut: 02000000
       isNextAttackTimeFixed: 1
       nextAttackTime: 1.5
       minNextAttackTime: 0
       maxNextAttackTime: 0
-      canBeStartMotion: 1
-    - key: 2
-      connectionKeyArrayIn: 02000000
+      canBeStartMotion: 0
+    - key: 3
+      connectionKeyArrayIn: 01000000
       connectionKeyArrayOut: 00000000
       isNextAttackTimeFixed: 1
-      nextAttackTime: 2
+      nextAttackTime: 1.5
       minNextAttackTime: 0
       maxNextAttackTime: 0
-      canBeStartMotion: 1
+      canBeStartMotion: 0

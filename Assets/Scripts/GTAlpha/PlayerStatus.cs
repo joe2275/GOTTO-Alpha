@@ -2,6 +2,17 @@
 {
     public class PlayerStatus : CharacterStatus
     {
+        private static PlayerStatus _instance;
+
+        public static PlayerStatus Instance
+        {
+            get
+            {
+                _instance ??= new PlayerStatus();
+                return _instance;
+            }
+        }
+        
         #region Private Static Methods
 
         /// <summary>
@@ -86,6 +97,15 @@
         /// 최종 플레이어의 타격 공격력
         /// </summary>
         public int BlowPower { get; }
+
+        #endregion
+
+        #region Private Functions
+
+        private PlayerStatus()
+        {
+            
+        }
 
         #endregion
     }
