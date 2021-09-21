@@ -73,10 +73,11 @@
         /// </summary>
         public override int DefensivePower => ConvertSecondToFirst(PlayerData.Resistance, PlayerInfo.ResistanceIncrease,
             PlayerInfo.ResistanceLimitation);
+
         /// <summary>
         /// 최종 플레이어 이동 속도
         /// </summary>
-        public override float MoveSpeed { get; } = 3.0f;
+        public override float MoveSpeed => Constant.PlayerMoveSpeed;
         /// <summary>
         /// 최종 플레이어의 공격 속성
         /// </summary>

@@ -159,7 +159,7 @@ namespace Camera3D
             }
         }
 
-        private void LateUpdate()
+        private void FixedUpdate()
         {
             if (!(TargetTransform is null))
             {

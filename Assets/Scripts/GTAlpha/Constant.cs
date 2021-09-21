@@ -25,7 +25,10 @@ namespace GTAlpha
         public static int AnimationForm { get; } = Animator.StringToHash("Form");
         public static int AnimationKey { get; } = Animator.StringToHash("Key");
         public static int AnimationAttack { get; } = Animator.StringToHash("Attack");
+        public static int AnimationEvade { get; } = Animator.StringToHash("Evade");
 
+        public static float PlayerMoveSpeed => _main.playerMoveSpeed;
+        public static float PlayerEvadeRotationTime => _main.playerEvadeRotationTime;
         public static float MaxRotationDelta => _main.maxRotationDelta;
         public static float MaxRotationDeltaWhileAttack => _main.maxRotationDeltaWhileAttack;
         public static float MovementInertiaDeltaOnGround => _main.movementInertiaDeltaOnGround;
@@ -37,6 +40,8 @@ namespace GTAlpha
 
         #region Serialize Fields
 
+        [SerializeField] private float playerMoveSpeed = 3.0f;
+        [SerializeField] private float playerEvadeRotationTime = 0.5f;
         [SerializeField] private float maxRotationDelta = 720.0f;
         [SerializeField] private float maxRotationDeltaWhileAttack = 360.0f;
         [SerializeField] private float movementInertiaDeltaOnGround = 5.0f;

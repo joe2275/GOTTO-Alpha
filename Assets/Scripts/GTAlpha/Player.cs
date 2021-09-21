@@ -1,5 +1,6 @@
 ﻿using Camera3D;
 using Manager;
+using StateBase;
 using UnityEngine;
 
 namespace GTAlpha
@@ -9,6 +10,12 @@ namespace GTAlpha
     /// </summary>
     public class Player : Character
     {
+        #region Const Fields
+
+        public const int EvadeState = 4;
+
+        #endregion
+        
         #region Fields
 
         private PlayerStatus mStatus;
@@ -22,6 +29,13 @@ namespace GTAlpha
         private bool mCanRotate;
         private bool mCanAttack;
         private int mAttackKey;
+        
+        // Evade 관련 변수
+        private bool mIsRotating;
+        private float mRotateTimer;
+        private Quaternion mFromRotation;
+        private Quaternion mToRotation;
+        
 
         #endregion
 
@@ -47,6 +61,25 @@ namespace GTAlpha
 
         public Transform TargetTransform { get; private set; }
 
+        public Vector3 WorldMovement
+        {
+            get
+            {
+                // 유저가 입력한 정규화된 이동 입력 값
+                Vector2 movement = PlayerInput.NormalizedMovement;
+
+                // 카메라의 전방, 우측 좌표를 가져온다. 
+                Vector3 cameraForward = ThirdPersonCamera.Main.Forward;
+                cameraForward = new Vector3(cameraForward.x, 0.0f, cameraForward.z).normalized;
+                Vector3 cameraRight = ThirdPersonCamera.Main.Right;
+                cameraRight = new Vector3(cameraRight.x, 0.0f, cameraRight.z).normalized;
+
+                // 카메라 좌표계를 이용하여 월드 좌표계에서 이동해야 하는 이동 값을 계산한다. 
+                Vector3 worldMovement = cameraForward * movement.y + cameraRight * movement.x;
+                return worldMovement;
+            }
+        }
+
         #endregion
 
         #region Public Functions
@@ -68,6 +101,12 @@ namespace GTAlpha
 
             UpdateInertiaAndRotationBasedOnCamera(Constant.MovementInertiaDeltaOnGround, Time.deltaTime);
 
+            if (PlayerInput.EvadeStarted)
+            {
+                State = EvadeState;
+                return;
+            }
+            
             if (PlayerInput.AttackStarted)
             {
                 State = AttackState;
@@ -154,11 +193,97 @@ namespace GTAlpha
 
         #endregion
 
+        #region Evade State Events
+
+        private void StartOnEvade()
+        {
+            // 애니메이터 파라미터 섦정
+            Animator.SetInteger(Constant.AnimationState, EvadeState);
+            // 코드 상에서는 Evade 상태를 탈출했으나 애니메이터는 Evade 상태를 탈출하지 못한 경우
+            // 애니메이션이 Animation_EndOfMotion 함수를 호출할 수 없는 교착 상태 방지 
+            Animator.SetTrigger(Constant.AnimationEvade);
+            
+            PlayerInput.EvadeStarted = false;
+            
+            mIsEndOfMotion = false;
+            // 유저로 부터 방향 입력이 존재하는 경우, 해당 방향으로 회전한다.
+            Vector2 movement = PlayerInput.Movement;
+            if (Mathf.Abs(movement.x) > 0 || Mathf.Abs(movement.y) > 0)
+            {
+                mRotateTimer = 0.0f;
+                mIsRotating = true;
+                mFromRotation = transform.rotation;
+                mToRotation = Quaternion.LookRotation(WorldMovement);
+
+                transform.rotation = Quaternion.Lerp(mFromRotation, mToRotation, mRotateTimer / Constant.PlayerEvadeRotationTime);
+            }
+            else
+            {
+                mIsRotating = false;
+            }
+        }
+
+        private void EndOnEvade()
+        {
+            PlayerInput.EvadeStarted = false;
+        }
+
+        private void UpdateOnEvade()
+        {
+            if (mIsEndOfMotion)
+            {
+                if (PlayerInput.EvadeStarted)
+                {
+                    State = EvadeState;
+                    return;
+                }
+                
+                State = NormalState;
+                return;
+            }
+            
+            if (!mIsRotating)
+            {
+                return;
+            }
+            
+            if (mRotateTimer < Constant.PlayerEvadeRotationTime)
+            {
+                mRotateTimer += Time.deltaTime;
+
+                transform.rotation = Quaternion.Lerp(mFromRotation, mToRotation, mRotateTimer / Constant.PlayerEvadeRotationTime);
+            }
+            else
+            {
+                mIsRotating = false;
+                
+                transform.rotation = Quaternion.Lerp(mFromRotation, mToRotation, mRotateTimer / Constant.PlayerEvadeRotationTime);
+            }
+        }
+
+        private void FixedUpdateOnEvade()
+        {
+            
+        }
+
+        #endregion
+
         #region Protected Functions
 
         protected override void Awake()
         {
             base.Awake();
+
+            #region Set Evade State
+
+            State<int> evade = new State<int>(EvadeState)
+            {
+                OnStart = StartOnEvade, OnEnd = EndOnEvade, OnUpdate = UpdateOnEvade, OnFixedUpdate = FixedUpdateOnEvade
+            };
+
+            SetState(evade);
+
+            #endregion
 
             mStatus = PlayerStatus.Instance;
             PlayerInput.Enable();

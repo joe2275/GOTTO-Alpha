@@ -43,13 +43,17 @@ namespace GTAlpha
         /// </summary>
         public static Vector2 Rotation => _inputMaster.InGame.Rotate.ReadValue<Vector2>();
         /// <summary>
-        /// 캐릭터 공격을 위한 유저로 부터 입력된 공격 버튼 입력값으로 눌리는 처음 순간에만 기록된다. 
+        /// 캐릭터 공격을 위해 유저로 부터 입력된 공격 버튼 입력값으로 눌리는 처음 순간에만 기록된다. 
         /// </summary>
         public static bool AttackStarted { get; set; }
         /// <summary>
-        /// 캐릭터의 시점 고정을 위한 유저로 부터 입력된 시점 고정 버튼 입력값으로 눌리는 처음 순간에만 기록된다. 
+        /// 캐릭터의 시점 고정을 위해 유저로 부터 입력된 시점 고정 버튼 입력값으로 눌리는 처음 순간에만 기록된다. 
         /// </summary>
         public static bool LockOnStarted { get; set; }
+        /// <summary>
+        /// 캐릭터 회피 동작을 위해 유저로 부터 입력된 회피 버튼 입력값으로 눌리는 처음 순간에만 기록된다. 
+        /// </summary>
+        public static bool EvadeStarted { get; set; }
 
         #endregion
 
@@ -67,6 +71,10 @@ namespace GTAlpha
                 _inputMaster.InGame.LockOn.started += context =>
                 {
                     LockOnStarted = true;
+                };
+                _inputMaster.InGame.Evade.started += context =>
+                {
+                    EvadeStarted = true;
                 };
             }
             _inputMaster.Enable();

@@ -12,20 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f58c9ab782d24e39b3701a61f7950174, type: 3}
   m_Name: Information_GameConstant
   m_EditorClassIdentifier: 
-  maxDegreesDelta: 720
+  playerMoveSpeed: 3
+  playerEvadeRotationTime: 0.14
+  maxRotationDelta: 720
+  maxRotationDeltaWhileAttack: 360
   movementInertiaDeltaOnGround: 5
   movementInertiaDeltaOnAir: 1
   jumpAcceleration: 5
   groundCriteria: 0.15
-  attackPerfectMinTimeMs: 17
-  attackPerfectMaxTimeMs: 75
-  attackGoodMinTimeMs: 30
-  attackGoodMaxTimeMs: 100
-  attackBadMinTimeMs: 45
-  attackBadMaxTimeMs: 135
-  attackMissMinTimeMs: 60
-  attackMissMaxTimeMs: 180
-  attackPerfectGradient: 1.01
-  attackGoodGradient: 1.011
-  attackBadGradient: 1.012
-  attackMissGradient: 1.013
