@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f58c9ab782d24e39b3701a61f7950174, type: 3}
   m_Name: Information_GameConstant
   m_EditorClassIdentifier: 
-  playerMoveSpeed: 3
+  playerMoveSpeed: 5
   playerEvadeRotationTime: 0.14
   maxRotationDelta: 720
   maxRotationDeltaWhileAttack: 360

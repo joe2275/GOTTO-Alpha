@@ -154,12 +154,22 @@ namespace GTAlpha
         {
             base.EndOnAttack();
             PlayerInput.AttackStarted = false;
+            mIsEndOfMotion = false;
+            mCanRotate = false;
+            mCanAttack = false;
             PlayerAttackTimer.TimerOff();
         }
 
         protected override void UpdateOnAttack()
         {
             base.UpdateOnAttack();
+
+            if (PlayerInput.EvadeStarted)
+            {
+                PlayerInput.EvadeStarted = false;
+                State = EvadeState;
+                return;
+            }
 
             if (mIsEndOfMotion)
             {
@@ -210,10 +220,14 @@ namespace GTAlpha
             Vector2 movement = PlayerInput.Movement;
             if (Mathf.Abs(movement.x) > 0 || Mathf.Abs(movement.y) > 0)
             {
+                Vector3 worldMovement = WorldMovement;
+
+                MovementInertia = worldMovement;
+                
                 mRotateTimer = 0.0f;
                 mIsRotating = true;
                 mFromRotation = transform.rotation;
-                mToRotation = Quaternion.LookRotation(WorldMovement);
+                mToRotation = Quaternion.LookRotation(worldMovement);
 
                 transform.rotation = Quaternion.Lerp(mFromRotation, mToRotation, mRotateTimer / Constant.PlayerEvadeRotationTime);
             }
